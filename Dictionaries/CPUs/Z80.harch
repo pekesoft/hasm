@@ -691,6 +691,50 @@
                     "Entries": [
                         {
                             "Index": [0],
+                            "Name": "NZ",
+                            "HASM": "!Zero"
+                        }, {
+                            "Index": [1],
+                            "Name": "Z",
+                            "HASM": "Zero"
+                        }, {
+                            "Index": [2],
+                            "Name": "NC",
+                            "HASM": "!Carry"
+                        }, {
+                            "Index": [3],
+                            "Name": "C",
+                            "HASM": "Carry"
+                        }, {
+                            "Index": [4],
+                            "Name": "PO",
+                            "HASM": "Odd",
+                            "Alias": ["!Even"]
+                        }, {
+                            "Index": [5],
+                            "Name": "PE",
+                            "HASM": "Even",
+                            "Alias": ["!Odd"]
+                        }, {
+                            "Index": [6],
+                            "Name": "P",
+                            "HASM": "Positive",
+                            "Alias": ["!Negative"]
+                        }, {
+                            "Index": [7],
+                            "Name": "M",
+                            "HASM": "Negative",
+                            "Alias": ["!Positive"]
+                        }
+                    ]
+                }, {
+                    "Name": "alu",
+                    "Size": 8,
+                    "TableType": "funtions",
+                    "Description": "Arihmetic and Logical Unit structure",
+                    "Entries": [
+                        {
+                            "Index": [0],
                             "Name": "",
                             "Size": 0,
                             "Description": "",
@@ -701,9 +745,40 @@
                         }
                     ]
                 }, {
-                    "Name": "",
-                    "Size": 0,
-                    "TableType": "",
+                    "Name": "int",
+                    "Size": 8,
+                    "TableType": "definitions",
+                    "Entries": [
+                        {
+                            "Index": [0],
+                            "Name": "0"
+                        }, {
+                            "Index": [1],
+                            "Name": "0/1"
+                        }, {
+                            "Index": [2],
+                            "Name": "1"
+                        }, {
+                            "Index": [3],
+                            "Name": "2"
+                        }, {
+                            "Index": [4],
+                            "Name": "0"
+                        }, {
+                            "Index": [5],
+                            "Name": "0/1"
+                        }, {
+                            "Index": [6],
+                            "Name": "1"
+                        }, {
+                            "Index": [7],
+                            "Name": "2"
+                        }
+                    ]
+                }, {
+                    "Name": "shift",
+                    "Size": 8,
+                    "TableType": "functions",
                     "Description": "",
                     "Entries": [
                         {
@@ -718,43 +793,9 @@
                         }
                     ]
                 }, {
-                    "Name": "",
-                    "Size": 0,
-                    "TableType": "",
-                    "Description": "",
-                    "Entries": [
-                        {
-                            "Index": [0],
-                            "Name": "",
-                            "Size": 0,
-                            "Description": "",
-                            "HASM": "",
-                            "Alias": [""],
-                            "Cycles": [ "Min", 0,
-                                        "Max", 0]
-                        }
-                    ]
-                }, {
-                    "Name": "",
-                    "Size": 0,
-                    "TableType": "",
-                    "Description": "",
-                    "Entries": [
-                        {
-                            "Index": [0],
-                            "Name": "",
-                            "Size": 0,
-                            "Description": "",
-                            "HASM": "",
-                            "Alias": [""],
-                            "Cycles": [ "Min", 0,
-                                        "Max", 0]
-                        }
-                    ]
-                }, {
-                    "Name": "",
-                    "Size": 0,
-                    "TableType": "",
+                    "Name": "block",
+                    "Size": [4, 4],
+                    "TableType": "functions",
                     "Description": "",
                     "Entries": [
                         {
