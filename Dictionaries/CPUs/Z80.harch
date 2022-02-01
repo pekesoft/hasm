@@ -482,6 +482,36 @@
             "DefaultValue": "0000h",
             "Description": "Program Counter",
         }, {
+            "Name": "SP",
+            "Size": 16,
+            "Access": " True",
+            "DefaultValue": "0000h",
+            "Description": "Stack Pointer",
+        }, {
+            "Name": "AF'",
+            "Size": 16,
+            "Access": "Indirect",
+            "DefaultValue": "0000h",
+            "Description": "Alternate Accumulator and Flags Register",
+        }, {
+            "Name": "BC'",
+            "Size": 16,
+            "Access": "Indirect",
+            "DefaultValue": "0000h",
+            "Description": "Alternate General Purpose Register",
+        }, {
+            "Name": "DE'",
+            "Size": 16,
+            "Access": "Indirect",
+            "DefaultValue": "0000h",
+            "Description": "Alternate General Purpose Register",
+        }, {
+            "Name": "HL'",
+            "Size": 16,
+            "Access": "Indirect",
+            "DefaultValue": "0000h",
+            "Description": "Alternate Index Register HL",
+        }, {
             "Name": "WZ",
             "Size": 16,
             "Access": "False",
