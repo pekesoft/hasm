@@ -1,0 +1,286 @@
+{
+    "Info": {
+        "Name": "Z80",
+        "Inherits": "8080",
+        "Type": "CISC",
+        "Architecture": "Von Neumann",
+        "Endianness": "Little Endian",
+        "Vendor": "Zilog",
+        "OtherVendors": ["Mostek", "Synertek", "SGS-Thomson", "NEC", "Sharp", "Toshiba", "Rohm", "GoldStar (LG)", "Hitachi", "National Semiconductor"],
+        "Developers": ["Federico Faggin", "Masatoshi Shima"],
+        "Release": "1976",
+        "EndProduction": "",
+        "MHz": [2.5, 4, 6, 8, 10],
+        "MFLOPS": [0],
+        "MIPS": [0],
+        "DataBus": 8,
+        "AddressBus": 16,
+        "Transistors": [],
+        "TechnologyNode": [""],
+        "CommTech": ["IOREQ"],
+        "Technologies": [""],
+        "Parallelism": [
+            {
+                "Cores": 1,
+                "Threads": 1
+            }
+        ]
+    },
+
+    "Packages": [
+        {
+            "Name": "DIP 40",
+            "Socket": "DIP 40",
+            "Pins": 40,
+            "Description": "Dual In-Line Package 40-pin",
+            "Datasheet": "www.zilog.com/docs/z80/z80.pdf",
+            "Pinout": [
+                {
+                    "Number": 0,
+                    "Type": "",
+                    "Symbol": [""],
+                    "Direction": [""],
+                    "Description": ""
+                }
+            ],
+            "Info": ["
+                                     +--\/--+
+                        <-- A11     1|      |40 A10    --> 
+                        <-- A12     2|      |39 A9     --> 
+                        <-- A13     3|      |38 A8     --> 
+                        <-- A14     4|      |37 A7     --> 
+                        <-- A15     5|      |36 A6     --> 
+                        --> CLK     6|      |35 A5     --> 
+                        <-> D4      7|      |34 A4     --> 
+                        <-> D3      8|      |33 A3     --> 
+                        <-> D5      9| Z80  |32 A2     --> 
+                        <-> D6     10|      |31 A1     --> 
+                            +5V Vcc   11|      |30 A0     --> 
+                        <-> D2     12|      |29 GND
+                        <-> D7     13|      |28 !RFSH  --> 
+                        <-> D0     14|      |27 !M1    --> 
+                        <-> D1     15|      |26 !RESET <-- 
+                        --> !INT   16|      |25 !BUSRQ <-- 
+                        --> !NMI   17|      |24 !WAIT  <-- 
+                        <-- !HALT  18|      |23 !BUSAK --> 
+                        <-- !MREQ  19|      |22 !WR    --> 
+                        <-- !IORQ  20|      |21 !RD    --> 
+                                     +------+ "]
+                    },
+    ],
+
+    "RegisterFile": [
+        {
+            "Name": "AF",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "0000h",
+            "Description": "Accumulator and Flags Register",
+            "Registers": [
+                {
+                    "Name": "A",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Accumulator Register"
+                }, {
+                    "Name": "F",
+                    "Size": 8,
+                    "Access": "Indirect",
+                    "DefaultValue": "00h",
+                    "Description": "Flags Register",
+                    "Flags": [
+                        {
+                            "bit": 7,
+                            "ShortName": "S",
+                            "Name": ["Sign"],
+                            "Description": ""
+                        }, {
+                            "bit": 6,
+                            "ShortName": "Z",
+                            "Name": ["Zero"],
+                            "Description": ""
+                        }, {
+                            "bit": 5,
+                            "ShortName": "x",
+                            "Name": ["Not Used"],
+                            "Description": ""
+                        }, {
+                            "bit": 4,
+                            "ShortName": "H",
+                            "Name": ["HalfCarry"],
+                            "Description": ""
+                        }, {
+                            "bit": 3,
+                            "ShortName": "x",
+                            "Name": ["Not Used"],
+                            "Description": ""
+                        }, {
+                            "bit": 2,
+                            "ShortName": "PV",
+                            "Name": ["Parity", "Overflow"],
+                            "Description": ""
+                        }, {
+                            "bit": 1,
+                            "ShortName": "N",
+                            "Name": ["Add", "Substract", "Negative"],
+                            "Description": ""
+                        }, {
+                            "bit": 0,
+                            "ShortName": "C",
+                            "Name": ["Carry"],
+                            "Description": ""
+                        }
+                    ]
+                }
+            ]
+        }, {
+            "Name": "BC",
+            "Size": 16,
+            "Access": "True",
+            "DefaultValue": "0000h",
+            "Description": "General Purpose Register",
+            "Registers": [
+                {
+                    "Name": "B",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "General Purpose Register"
+                }, {
+                    "Name": "C",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "General Purpose Register"
+                }
+            ]
+        }, {
+            "Name": "DE",
+            "Size": 16,
+            "Access": "True",
+            "DefaultValue": "0000h",
+            "Description": "General Purpose Register",
+            "Registers": [
+                {
+                    "Name": "D",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "General Purpose Register"
+                }, {
+                    "Name": "E",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "General Purpose Register"
+                }
+            ]
+        }, {
+            "Name": "HL",
+            "Size": 16,
+            "Access": "True",
+            "DefaultValue": "0000h",
+            "Description": "Index Register HL",
+            "Registers": [
+                {
+                    "Name": "H",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Index Register H"
+                }, {
+                    "Name": "L",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Index Register L"
+                }
+            ]
+        }, {
+            "Name": "IX",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "0000h",
+            "Description": "Index Register X",
+            "Registers": [
+                {
+                    "Name": "IXH",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Index Register X High Byte"
+                }, {
+                    "Name": "IXL",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Index Register X Low Byte"
+                }
+            ]
+        }, {
+            "Name": "IY",
+            "Size": 16,
+            "Access": "True",
+            "DefaultValue": "0000h",
+            "Description": "Index Register Y",
+            "Registers": [
+                {
+                    "Name": "IYH",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Index Register Y High Byte"
+                }, {
+                    "Name": "IYL",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Index Register Y Low Byte"
+                }
+            ]
+        }, {
+            "Name": "PC",
+            "Size": 16,
+            "Access": "False",
+            "DefaultValue": "0000h",
+            "Description": "Program Counter",
+        }, {
+            "Name": "WZ",
+            "Size": 16,
+            "Access": "False",
+            "DefaultValue": "0000h",
+            "Description": "Internal Work Register",
+            "Registers": [
+                {
+                    "Name": "W",
+                    "Size": 8,
+                    "Access": "False",
+                    "DefaultValue": "00h",
+                    "Description": "Internal Work Register"
+                }, {
+                    "Name": "Z",
+                    "Size": 8,
+                    "Access": "False",
+                    "DefaultValue": "00h",
+                    "Description": "Internal Work Register"
+                }
+            ]
+        }, {
+            "Name": "I",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Interrupt Register"
+        }, {
+            "Name": "R",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "DRAM Refresh Counter"
+        }
+    ]
+
+    
+
+}
