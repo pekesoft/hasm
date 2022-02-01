@@ -316,7 +316,7 @@
         {
             "Name": "AF",
             "Size": 16,
-            "Access": "",
+            "Access": "True",
             "DefaultValue": "0000h",
             "Description": "Accumulator and Flags Register",
             "Registers": [

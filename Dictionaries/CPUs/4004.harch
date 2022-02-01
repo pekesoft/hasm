@@ -15,7 +15,7 @@
         "EndProduction": "1981",
         "MHz": [0.5, 0.740],
         "MFLOPS": [0],
-        "MIPS": [0.056, "@ 1MHz"],
+        "MIPS": [0.056, 1, "MHz"],
         "DataBus": 4,
         "AddressBus": 12,
         "AddressType": "Multiplexed",
@@ -54,28 +54,217 @@
 
     "RegisterFile": [
         {
-            "Name": "",
-            "Size": 0,
-            "Access": "",
-            "DefaultValue": "",
-            "Description": "",
-            "Registers": [
+            "Name": "A",
+            "Size": 4,
+            "Access": "True",
+            "DefaultValue": "0h",
+            "Description": "Accumulator register"
+        }, {
+            "Name": "F",
+            "Size": 1,
+            "Access": "True",
+            "DefaultValue": "0",
+            "Description": "Flag register",
+            "Flags": [
                 {
-                    "Name": "",
-                    "Size": 0,
-                    "Access": "",
-                    "DefaultValue": "",
-                    "Description": "",
-                    "Flags": [
-                        {
-                            "bit": 0,
-                            "ShortName": "",
-                            "Name": [""],
-                            "Description": ""
-                        }
-                    ]
+                    "bit": 0,
+                    "ShortName": "C",
+                    "Name": ["Carry"],
+                    "Description": "Carry flag"
                 }
             ]
+        }, {
+            "Name": "P01",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Pair of General purpose registers",
+            "Registers": [
+                {
+                    "Name": "R0",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }, {
+                    "Name": "R1",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }
+            ]
+        }, {
+            "Name": "P23",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Pair of General purpose registers",
+            "Registers": [
+                {
+                    "Name": "R2",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }, {
+                    "Name": "R3",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }
+            ]
+        }, {
+            "Name": "P45",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Pair of General purpose registers",
+            "Registers": [
+                {
+                    "Name": "R4",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }, {
+                    "Name": "R5",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }
+            ]
+        }, {
+            "Name": "P67",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Pair of General purpose registers",
+            "Registers": [
+                {
+                    "Name": "R6",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }, {
+                    "Name": "R7",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }
+            ]
+        }, {
+            "Name": "P89",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Pair of General purpose registers",
+            "Registers": [
+                {
+                    "Name": "R8",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }, {
+                    "Name": "R9",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }
+            ]
+        }, {
+            "Name": "P1011",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Pair of General purpose registers",
+            "Registers": [
+                {
+                    "Name": "R10",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }, {
+                    "Name": "R11",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }
+            ]
+        }, {
+            "Name": "P1213",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Pair of General purpose registers",
+            "Registers": [
+                {
+                    "Name": "R12",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }, {
+                    "Name": "R13",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }
+            ]
+        }, {
+            "Name": "P1415",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Pair of General purpose registers",
+            "Registers": [
+                {
+                    "Name": "R14",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }, {
+                    "Name": "R15",
+                    "Size": 4,
+                    "Access": "True",
+                    "DefaultValue": "0h",
+                    "Description": "General purpose registers"
+                }
+            ]
+        }, {
+            "Name": "PC",
+            "Size": 12,
+            "Access": "Indirect",
+            "DefaultValue": "000h",
+            "Description": "Program Counter"
+        }, {
+            "Name": "PC1",
+            "Size": 12,
+            "Access": "Indirect",
+            "DefaultValue": "000h",
+            "Description": "Push-down stack"
+        }, {
+            "Name": "PC2",
+            "Size": 12,
+            "Access": "Indirect",
+            "DefaultValue": "000h",
+            "Description": "Push-down stack"
+        }, {
+            "Name": "PC3",
+            "Size": 12,
+            "Access": "Indirect",
+            "DefaultValue": "000h",
+            "Description": "Push-down stack"
         }
     ]
 
