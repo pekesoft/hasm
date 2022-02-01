@@ -105,100 +105,100 @@
                     "Description": "5V supply"
                 }, {
                     "Number": 12,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Data",
+                    "Symbol": ["D2"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
                 }, {
                     "Number": 13,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Data",
+                    "Symbol": ["D7"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
                 }, {
                     "Number": 14,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Data",
+                    "Symbol": ["D0"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
                 }, {
                     "Number": 15,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Data",
+                    "Symbol": ["D1"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
                 }, {
                     "Number": 16,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!INT"],
+                    "Direction": ["Input"],
+                    "Description": "Interrupt"
                 }, {
                     "Number": 17,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!NMI"],
+                    "Direction": ["Input"],
+                    "Description": "Non-maskable interrupt"
                 }, {
                     "Number": 18,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!HALT"],
+                    "Direction": ["Output"],
+                    "Description": "System stop until interrupt"
                 }, {
                     "Number": 19,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!MREQ"],
+                    "Direction": ["Output"],
+                    "Description": "Storage memory request"
                 }, {
                     "Number": 20,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!IORQ"],
+                    "Direction": ["Output"],
+                    "Description": "System input/output request"
                 }, {
                     "Number": 21,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!RD"],
+                    "Direction": ["Output"],
+                    "Description": "Memory read"
                 }, {
                     "Number": 22,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!WR"],
+                    "Direction": ["Output"],
+                    "Description": "Memory Write"
                 }, {
                     "Number": 23,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!BUSAK"],
+                    "Direction": ["Output"],
+                    "Description": "System bus acknowledge"
                 }, {
                     "Number": 24,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!WAIT"],
+                    "Direction": ["Input"],
+                    "Description": "System stop"
                 }, {
                     "Number": 25,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!BUSRQ"],
+                    "Direction": ["Input"],
+                    "Description": "System bus request"
                 }, {
                     "Number": 26,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!RESET"],
+                    "Direction": ["Input"],
+                    "Description": "System reset"
                 }, {
                     "Number": 27,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
+                    "Type": "Signal",
+                    "Symbol": ["!M1"],
+                    "Direction": ["Output"],
+                    "Description": "System Bus Machine 1 cycle"
                 }, {
                     "Number": 28,
                     "Type": "Signal",
