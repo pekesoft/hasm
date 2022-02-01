@@ -1,7 +1,9 @@
 {
     "Info": {
         "Name": "Z80",
+        "Alias": "Z80",
         "Inherits": "8080",
+        "Succesors": ["Z180", "eZ80", "R800", "Z8"],
         "Type": "CISC",
         "Architecture": "Von Neumann",
         "Endianness": "Little Endian",
@@ -55,7 +57,7 @@
                         <-> D3      8|      |33 A3     --> 
                         <-> D5      9| Z80  |32 A2     --> 
                         <-> D6     10|      |31 A1     --> 
-                            +5V Vcc   11|      |30 A0     --> 
+                         +5V Vcc   11|      |30 A0     --> 
                         <-> D2     12|      |29 GND
                         <-> D7     13|      |28 !RFSH  --> 
                         <-> D0     14|      |27 !M1    --> 
