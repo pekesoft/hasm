@@ -552,6 +552,255 @@
             "DefaultValue": "00h",
             "Description": "DRAM Refresh Counter"
         }
+    ],
+    
+    "Decode" : [
+        {
+            "Definitions": [
+                {
+                    "Name": "disp",
+                    "Size": 8,
+                    "Type": "COMP-2 Signed Integer",
+                    "Description": "Displacement byte"
+                },                 {
+                    "Name": "byte",
+                    "Size": 8,
+                    "Type": "Unsigned Integer",
+                    "Description": "8-bit immediate operand"
+                },                 {
+                    "Name": "word",
+                    "Size": 16,
+                    "Type": "Unsigned Integer - Little Endian",
+                    "Description": "16-bit immediate operand"
+                },                 {
+                    "Name": "tab[x]",
+                    "Size": 0,
+                    "Type": "Definition",
+                    "Description": "Whatever is contained in the table named tab at index x (analogous for y and z and other table names)"
+                }
+            ],
+            "Tables": [
+                {
+                    "Name": "opcode",
+                    "Size": 8,
+                    "TableType": "opcode",
+                    "Description": "Opcode structure",
+                    "Entries": [
+                        {
+                            "Index": [7, 6],
+                            "Name": "x",
+                            "Size": 2
+                        }, {
+                            "Index": [5, 4, 3],
+                            "Name": "y",
+                            "Size": 3,
+                            "Entries": [
+                                {
+                                    "Index": [5, 4],
+                                    "Name": "p",
+                                    "Size": 2
+                                }, {
+                                    "Index": [3],
+                                    "Name": "q",
+                                    "Size": 1
+                                }
+                            ]
+                        }, {
+                            "Index": [2, 1, 0],
+                            "Name": "z",
+                            "Size": 3
+                        }
+                    ]
+                }, {
+                    "Name": "reg",
+                    "Size": 8,
+                    "TableType": "definitions",
+                    "Description": "8 bit register structure",
+                    "Entries": [
+                        {
+                            "Index": [0],
+                            "Name": "B"
+                        }, {
+                            "Index": [1],
+                            "Name": "C"
+                        }, {
+                            "Index": [2],
+                            "Name": "D"
+                        }, {
+                            "Index": [3],
+                            "Name": "E"
+                        }, {
+                            "Index": [4],
+                            "Name": "H"
+                        }, {
+                            "Index": [5],
+                            "Name": "L"
+                        }, {
+                            "Index": [6],
+                            "Name": "(HL)"
+                        }, {
+                            "Index": [7],
+                            "Name": "A"
+                        }
+                    ]
+                }, {
+                    "Name": "regP",
+                    "Size": 4,
+                    "TableType": "definitions",
+                    "Description": "16 bit register structure",
+                    "Entries": [
+                        {
+                            "Index": [0],
+                            "Name": "BC"
+                        }, {
+                            "Index": [1],
+                            "Name": "DE"
+                        }, {
+                            "Index": [2],
+                            "Name": "HL"
+                        }, {
+                            "Index": [3],
+                            "Name": "SP"
+                        }
+                    ]
+                }, {
+                    "Name": "regP2",
+                    "Size": 4,
+                    "TableType": "definitions",
+                    "Description": "16 bit register structure",
+                    "Entries": [
+                        {
+                            "Index": [0],
+                            "Name": "BC"
+                        }, {
+                            "Index": [1],
+                            "Name": "DE"
+                        }, {
+                            "Index": [2],
+                            "Name": "HL"
+                        }, {
+                            "Index": [3],
+                            "Name": "AF"
+                        }
+                    ]
+                }, {
+                    "Name": "cond",
+                    "Size": 8,
+                    "TableType": "definitions",
+                    "Description": "Conditions structure",
+                    "Entries": [
+                        {
+                            "Index": [0],
+                            "Name": "",
+                            "Size": 0,
+                            "Description": "",
+                            "HASM": "",
+                            "Alias": [""],
+                            "Cycles": [ "Min", 0,
+                                        "Max", 0]
+                        }
+                    ]
+                }, {
+                    "Name": "",
+                    "Size": 0,
+                    "TableType": "",
+                    "Description": "",
+                    "Entries": [
+                        {
+                            "Index": [0],
+                            "Name": "",
+                            "Size": 0,
+                            "Description": "",
+                            "HASM": "",
+                            "Alias": [""],
+                            "Cycles": [ "Min", 0,
+                                        "Max", 0]
+                        }
+                    ]
+                }, {
+                    "Name": "",
+                    "Size": 0,
+                    "TableType": "",
+                    "Description": "",
+                    "Entries": [
+                        {
+                            "Index": [0],
+                            "Name": "",
+                            "Size": 0,
+                            "Description": "",
+                            "HASM": "",
+                            "Alias": [""],
+                            "Cycles": [ "Min", 0,
+                                        "Max", 0]
+                        }
+                    ]
+                }, {
+                    "Name": "",
+                    "Size": 0,
+                    "TableType": "",
+                    "Description": "",
+                    "Entries": [
+                        {
+                            "Index": [0],
+                            "Name": "",
+                            "Size": 0,
+                            "Description": "",
+                            "HASM": "",
+                            "Alias": [""],
+                            "Cycles": [ "Min", 0,
+                                        "Max", 0]
+                        }
+                    ]
+                }, {
+                    "Name": "",
+                    "Size": 0,
+                    "TableType": "",
+                    "Description": "",
+                    "Entries": [
+                        {
+                            "Index": [0],
+                            "Name": "",
+                            "Size": 0,
+                            "Description": "",
+                            "HASM": "",
+                            "Alias": [""],
+                            "Cycles": [ "Min", 0,
+                                        "Max", 0]
+                        }
+                    ]
+                }
+            ],
+            "Instructions": [
+                {
+                    "Segment": "",
+                    "Value": 0,
+                    "Bytes": 0,
+                    "Cycles": [ "Min", 0,
+                                "Max", 0],
+                    "Group": "",
+                    "Description": "",
+                    "ASM": "",
+                    "Mnemonic": "",
+                    "Destination": [""],
+                    "Source": [""],
+                    "HASM": "",
+                    "Alias": [""],
+                    "HDest": [""],
+                    "HOpers": "",
+                    "HOper1": "",
+                    "HSource1": [""],
+                    "HOper2": "",
+                    "HSource2": [""],
+                    "HComplement": "",
+                    "Subsegments": [
+                        {
+
+                        }
+                    ]
+                }
+            ]
+
+        }
     ]
 
     
