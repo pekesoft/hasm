@@ -6,7 +6,7 @@
         "Succesors": ["4040", "8008"],
         "Type": "CISC",
         "Architecture": "Harvard",
-        "Endianness": "",
+        "Endianness": "Big Endian",
         "Vendor": "Intel",
         "OtherVendors": [""],
         "Developers": ["Marcian \"Ted\" Hoff", "Federico Faggin", "Masatoshi Shima"],
@@ -38,7 +38,7 @@
             "Socket": "DIP 16",
             "Pins": 16,
             "Description": "",
-            "Datasheet": "",
+            "Datasheet": "https://web.archive.org/web/20110601032753/http://www.intel.com/Assets/PDF/DataSheet/4004_datasheet.pdf",
             "Pinout": [
                 {
                     "Number": 0,
