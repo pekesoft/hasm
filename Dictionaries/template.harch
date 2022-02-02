@@ -102,8 +102,8 @@
                             "Description": "",
                             "HASM": "",
                             "Alias": [""],
-                            "Cycles": [ "Min", 0,
-                                        "Max", 0]
+                            "Cycles": ["Min", 0,
+                                       "Max", 0]
                         }
                     ]
                 }
@@ -113,8 +113,8 @@
                     "Segment": "",
                     "Value": 0,
                     "Bytes": 0,
-                    "Cycles": [ "Min", 0,
-                                "Max", 0],
+                    "Cycles": ["Min", 0,
+                               "Max", 0],
                     "Group": "",
                     "Description": "",
                     "ASM": "",
