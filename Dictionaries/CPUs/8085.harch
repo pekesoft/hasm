@@ -1,0 +1,144 @@
+{
+    "Info": {
+        "Name": "8085",
+        "Alias": "",
+        "Inherits": "8080",
+        "Succesors": ["8086"],
+        "Type": "CISC",
+        "Architecture": "Von Neumann",
+        "Endianness": "Little Endian",
+        "Vendor": "Intel",
+        "OtherVendors": ["AMD", "Mitsubishi", "NEC", "NZPP Novosibirsk", "OKI", "Siemens", "Toshiba"],
+        "Developers": [""],
+        "Wiki": "https://en.wikipedia.org/wiki/Intel_8085",
+        "Release": "1976",
+        "EndProduction": "2000",
+        "MHz": [3, 5, 6],
+        "MFLOPS": [0],
+        "MIPS": [0, 0, "MHz"],
+        "DataBus": 8,
+        "AddressBus": 16,
+        "AddressType": "",
+        "Transistors": [6500],
+        "TechnologyNode": ["3 µm"],
+        "CommTech": [""],
+        "Technologies": [""],
+        "Parallelism": [
+            {
+                "Cores": 1,
+                "Threads": 1
+            }
+        ]
+    },
+
+    "Packages": [
+        {
+            "Name": "",
+            "Socket": "",
+            "Pins": 0,
+            "Description": "",
+            "Datasheet": "",
+            "Pinout": [
+                {
+                    "Number": 0,
+                    "Type": "",
+                    "Symbol": [""],
+                    "Direction": [""],
+                    "Description": ""
+                }
+            ],
+            "Info": [""]
+        }
+    ],
+
+    "RegisterFile": [
+        {
+            "Name": "",
+            "Size": 0,
+            "Access": "",
+            "DefaultValue": "",
+            "Description": "",
+            "Registers": [
+                {
+                    "Name": "",
+                    "Size": 0,
+                    "Access": "",
+                    "DefaultValue": "",
+                    "Description": "",
+                    "Flags": [
+                        {
+                            "bit": 0,
+                            "ShortName": "",
+                            "Name": [""],
+                            "Description": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+
+    "Decode" : [
+        {
+            "Definitions": [
+                {
+                    "Name": "",
+                    "Size": 0,
+                    "Type": "",
+                    "Description": ""
+                }
+            ],
+            "Tables": [
+                {
+                    "Name": "",
+                    "Size": 0,
+                    "TableType": "",
+                    "Description": "",
+                    "Entries": [
+                        {
+                            "Index": [0],
+                            "Name": "",
+                            "Size": 0,
+                            "Description": "",
+                            "HASM": "",
+                            "Alias": [""],
+                            "Cycles": ["Min", 0,
+                                       "Max", 0]
+                        }
+                    ]
+                }
+            ],
+            "Instructions": [
+                {
+                    "Segment": "",
+                    "Value": 0,
+                    "Bytes": 0,
+                    "Cycles": ["Min", 0,
+                               "Max", 0],
+                    "Group": "",
+                    "Description": "",
+                    "ASM": "",
+                    "Mnemonic": "",
+                    "Destination": [""],
+                    "Source": [""],
+                    "HASM": "",
+                    "Alias": [""],
+                    "HDest": [""],
+                    "HOpers": "",
+                    "HOper1": "",
+                    "HSource1": [""],
+                    "HOper2": "",
+                    "HSource2": [""],
+                    "HComplement": "",
+                    "Subsegments": [
+                        {
+
+                        }
+                    ]
+                }
+            ]
+
+        }
+    ]
+
+}

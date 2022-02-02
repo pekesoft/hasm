@@ -1,0 +1,18 @@
+{
+    "Info": {
+        "Name": "",
+        "Vendor": ""
+    },
+    "Models": [
+        {
+            "Name": "",
+            "Inherits": "",
+            "Succesor": [""],
+            "Release": "",
+            "EndProduction": "",
+            "RAMSize": [0],
+            "ROMSize": [0],
+            "ROMName": [""]
+        }
+    ]
+}
