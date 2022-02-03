@@ -1,2 +1,5 @@
 *.harch linguist-language=json
 *.hsys linguist-language=json
+*.hpack linguist-language=json
+*.hopc linguist-language=json
+*.hdec linguist-language=json

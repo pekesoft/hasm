@@ -1,0 +1,277 @@
+{
+    "Packages": [
+        {
+            "Name": "DIP 40",
+            "Socket": "DIP 40",
+            "Pins": 40,
+            "Description": "Dual In-Line Package 40-pin",
+            "Datasheet": "www.zilog.com/docs/z80/z80.pdf",
+            "Pinout": [
+                {
+                    "Number": 1,
+                    "Type": "Address",
+                    "Symbol": ["A11"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 2,
+                    "Type": "Address",
+                    "Symbol": ["A12"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 3,
+                    "Type": "Address",
+                    "Symbol": ["A13"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 4,
+                    "Type": "Address",
+                    "Symbol": ["A14"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 5,
+                    "Type": "Address",
+                    "Symbol": ["A15"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 6,
+                    "Type": "Clock",
+                    "Symbol": ["!CLK"],
+                    "Direction": ["Input"],
+                    "Description": "Main clock"
+                }, {
+                    "Number": 7,
+                    "Type": "Data",
+                    "Symbol": ["D4"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
+                }, {
+                    "Number": 8,
+                    "Type": "Data",
+                    "Symbol": ["D3"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
+                }, {
+                    "Number": 9,
+                    "Type": "Data",
+                    "Symbol": ["D5"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
+                }, {
+                    "Number": 10,
+                    "Type": "Data",
+                    "Symbol": ["D6"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
+                }, {
+                    "Number": 11,
+                    "Type": "5V",
+                    "Symbol": ["VCC"],
+                    "Direction": ["VCC"],
+                    "Description": "5V supply"
+                }, {
+                    "Number": 12,
+                    "Type": "Data",
+                    "Symbol": ["D2"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
+                }, {
+                    "Number": 13,
+                    "Type": "Data",
+                    "Symbol": ["D7"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
+                }, {
+                    "Number": 14,
+                    "Type": "Data",
+                    "Symbol": ["D0"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
+                }, {
+                    "Number": 15,
+                    "Type": "Data",
+                    "Symbol": ["D1"],
+                    "Direction": ["Bidirectional"],
+                    "Description": "Data bus"
+                }, {
+                    "Number": 16,
+                    "Type": "Signal",
+                    "Symbol": ["!INT"],
+                    "Direction": ["Input"],
+                    "Description": "Interrupt"
+                }, {
+                    "Number": 17,
+                    "Type": "Signal",
+                    "Symbol": ["!NMI"],
+                    "Direction": ["Input"],
+                    "Description": "Non-maskable interrupt"
+                }, {
+                    "Number": 18,
+                    "Type": "Signal",
+                    "Symbol": ["!HALT"],
+                    "Direction": ["Output"],
+                    "Description": "System stop until interrupt"
+                }, {
+                    "Number": 19,
+                    "Type": "Signal",
+                    "Symbol": ["!MREQ"],
+                    "Direction": ["Output"],
+                    "Description": "Storage memory request"
+                }, {
+                    "Number": 20,
+                    "Type": "Signal",
+                    "Symbol": ["!IORQ"],
+                    "Direction": ["Output"],
+                    "Description": "System input/output request"
+                }, {
+                    "Number": 21,
+                    "Type": "Signal",
+                    "Symbol": ["!RD"],
+                    "Direction": ["Output"],
+                    "Description": "Memory read"
+                }, {
+                    "Number": 22,
+                    "Type": "Signal",
+                    "Symbol": ["!WR"],
+                    "Direction": ["Output"],
+                    "Description": "Memory Write"
+                }, {
+                    "Number": 23,
+                    "Type": "Signal",
+                    "Symbol": ["!BUSAK"],
+                    "Direction": ["Output"],
+                    "Description": "System bus acknowledge"
+                }, {
+                    "Number": 24,
+                    "Type": "Signal",
+                    "Symbol": ["!WAIT"],
+                    "Direction": ["Input"],
+                    "Description": "System stop"
+                }, {
+                    "Number": 25,
+                    "Type": "Signal",
+                    "Symbol": ["!BUSRQ"],
+                    "Direction": ["Input"],
+                    "Description": "System bus request"
+                }, {
+                    "Number": 26,
+                    "Type": "Signal",
+                    "Symbol": ["!RESET"],
+                    "Direction": ["Input"],
+                    "Description": "System reset"
+                }, {
+                    "Number": 27,
+                    "Type": "Signal",
+                    "Symbol": ["!M1"],
+                    "Direction": ["Output"],
+                    "Description": "System Bus Machine 1 cycle"
+                }, {
+                    "Number": 28,
+                    "Type": "Signal",
+                    "Symbol": ["!RFSH"],
+                    "Direction": ["Output"],
+                    "Description": "DRAM Refresh Signal"
+                }, {
+                    "Number": 29,
+                    "Type": "GND",
+                    "Symbol": ["GND"],
+                    "Direction": ["GND"],
+                    "Description": "Ground"
+                }, {
+                    "Number": 30,
+                    "Type": "Address",
+                    "Symbol": ["A0"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 31,
+                    "Type": "Address",
+                    "Symbol": ["A1"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 32,
+                    "Type": "Address",
+                    "Symbol": ["A2"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 33,
+                    "Type": "Address",
+                    "Symbol": ["A3"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 34,
+                    "Type": "Address",
+                    "Symbol": ["A4"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 35,
+                    "Type": "Address",
+                    "Symbol": ["A5"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 36,
+                    "Type": "Address",
+                    "Symbol": ["A6"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 37,
+                    "Type": "Address",
+                    "Symbol": ["A7"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 38,
+                    "Type": "Address",
+                    "Symbol": ["A8"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 39,
+                    "Type": "Address",
+                    "Symbol": ["A9"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }, {
+                    "Number": 40,
+                    "Type": "Address",
+                    "Symbol": ["A10"],
+                    "Direction": ["Output"],
+                    "Description": "Address bus"
+                }
+            ],
+            "Info": [
+                    "             +--\/--+",
+                    "<-- A11     1|      |40 A10    -->", 
+                    "<-- A12     2|      |39 A9     -->", 
+                    "<-- A13     3|      |38 A8     --> ",
+                    "<-- A14     4|      |37 A7     -->", 
+                    "<-- A15     5|      |36 A6     -->",
+                    "--> CLK     6|      |35 A5     -->",
+                    "<-> D4      7|      |34 A4     -->", 
+                    "<-> D3      8|      |33 A3     -->", 
+                    "<-> D5      9| Z80  |32 A2     -->", 
+                    "<-> D6     10|      |31 A1     -->", 
+                    " +5V Vcc   11|      |30 A0     -->", 
+                    "<-> D2     12|      |29 GND",
+                    "<-> D7     13|      |28 !RFSH  -->", 
+                    "<-> D0     14|      |27 !M1    -->", 
+                    "<-> D1     15|      |26 !RESET <--", 
+                    "--> !INT   16|      |25 !BUSRQ <--", 
+                    "--> !NMI   17|      |24 !WAIT  <--", 
+                    "<-- !HALT  18|      |23 !BUSAK -->", 
+                    "<-- !MREQ  19|      |22 !WR    -->", 
+                    "<-- !IORQ  20|      |21 !RD    -->", 
+                    "             +------+ "]
+        }
+    ]
+}
