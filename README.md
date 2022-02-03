@@ -11,3 +11,35 @@ Eso de cara a la industria, a la educación, al mantenimiento y al desarrollo es
 Por eso nace la idea de HASM, un lenguaje de programación en bajo nivel que recupera la esencia de los lenguajes de alto nivel como c, basic o python, así como lenguajes de marcas como XML, para llevarlos a una estructura de programación a bajo nivel homogenea y universal.
 
 De esta manera, las reglas del lenguaje están claras, así que sólo hay que limitarse a las diferencias y peculiaridades de la arquitectura, y no al lenguaje propiamente dicho.
+
+## Diccionarios
+
+Las arquitecturas y funcionalidades de cada dispositivo están definidas en una serie de diccionarios estructurados de la siguiente manera:
+
+### harch: Arquitecturas
+
+Este fichero define metainformación de la arquitectura, así como el banco de registros interno.
+
+### hpack: Packages
+
+Este diccionario define los distintos empaquetados del dispositivo, así como características técnicas y su pinout.
+
+### hdec: Decodificador
+
+Este es el más importante, ya que define mediante tablas todas las operaciones disponibles, así como su distribución y equivalencias en HASM.
+
+### hopc: Tablas de Opcodes
+
+Con la tabla anterior se genera mediante producto cartesiano todas las tablas de opcodes, que son las que utiliza el compilador para procesar el lenguaje.
+
+### hsys: Arquitectura de Sistemas
+
+En este otro diccionario se definen todos los hardwares y periféricos que utilizan un determinado dispositivo, y se declaran todas las peculiaridades del sistema, como interrupciones, direcciones de memoria, así como información técnica.
+
+### halias: Diccionarios de alias
+
+Esta es una parte muy potente de hasm, ya que permite redefinir palabras clave del lenguaje o instrucciones, permitiendo flexibilizarlo hasta el punto de poder programar en ensamblador con apariencia de basic, en español, o incluso con emojis.
+
+Esto posibilita múltiples opciones muy interesantes, que van desde la parte educativa y el aprendizaje, la personalización del lenguaje y hasta la programación en equipo en diferentes idiomas. Incluso sirve para preservar seguridad para el código propietario, ya que se puede utilizar para ofuscar el código fuente.
+
+Los diccionarios son traducibles unos entre otros y están ordenados jerárquicamente.

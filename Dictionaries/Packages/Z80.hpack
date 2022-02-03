@@ -3,9 +3,14 @@
         {
             "Name": "DIP 40",
             "Socket": "DIP 40",
+            "PartNumber": [""],
+            "Inherits" : "",
             "Pins": 40,
             "Description": "Dual In-Line Package 40-pin",
             "Datasheet": "www.zilog.com/docs/z80/z80.pdf",
+            "Voltages": [5],
+            "Power": [0, "mW",
+                      0, "mA"],            
             "Pinout": [
                 {
                     "Number": 1,

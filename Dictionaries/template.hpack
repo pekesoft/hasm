@@ -3,12 +3,18 @@
         {
             "Name": "",
             "Socket": "",
+            "PartNumber": [""],
+            "Inherits" : "",
             "Pins": 0,
             "Description": "",
             "Datasheet": "",
+            "Voltages": [5],
+            "Power": [0, "mW",
+                      0, "mA"],
             "Pinout": [
                 {
                     "Number": 0,
+                    "Inherits": 0,
                     "Type": "",
                     "Symbol": [""],
                     "Direction": [""],
