@@ -4,7 +4,7 @@ Human Assembler ha sido creado para establecer una capa de abstracción a bajo n
 
 Durante años y décadas han estado regidos por un código muy primitivo y poco evolucionado basado en mnemónicos y opcodes. El objetivo es llegar a la esencia de esos opcodes para crear un lenguaje dinámico, expresivo, fácil de aprender y de mantener, además de ser totalmente personalizable.
 
-Esos mnemónicos al estar sujetos por los derechos del copyright eran distintos para cada fabricante, por lo que aprender un lenguaje ensamblador en concreto implicaba limitarse no sólo a las especificaciones de dicho procesador, si no también a su implementación del desarrollo de su arquitectura, con palabras claves exclusivas que nada se parecen a las de la competencia.
+Esos mnemónicos, al estar sujetos por los derechos del copyright eran distintos para cada fabricante, por lo que aprender un lenguaje ensamblador en concreto implicaba limitarse no sólo a las especificaciones de dicho procesador, si no también a su implementación del desarrollo de su arquitectura, con palabras claves exclusivas que nada se parecen a las de la competencia.
 
 Eso de cara a la industria, a la educación, al mantenimiento y al desarrollo es un handicap mayúsculo, ya que es necesario aprenderse las peculiaridades de cada lenguaje, además de la correspondiente arquitectura de cada procesador. Lo cual hace que la curva de aprendizaje sea grandísima y con un espectro de aplicación limitado.
 
@@ -42,4 +42,4 @@ Esta es una parte muy potente de hasm, ya que permite redefinir palabras clave d
 
 Esto posibilita múltiples opciones muy interesantes, que van desde la parte educativa y el aprendizaje, la personalización del lenguaje y hasta la programación en equipo en diferentes idiomas. Incluso sirve para preservar seguridad para el código propietario, ya que se puede utilizar para ofuscar el código fuente.
 
-Los diccionarios son traducibles unos entre otros y están ordenados jerárquicamente.
+Los diccionarios de alias son traducibles unos entre otros y están ordenados jerárquicamente.
