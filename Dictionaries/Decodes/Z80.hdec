@@ -5,17 +5,17 @@
             "Size": 8,
             "Type": "COMP-2 Signed Integer",
             "Description": "Displacement byte"
-        },                 {
+        }, {
             "Name": "byte",
             "Size": 8,
             "Type": "Unsigned Integer",
             "Description": "8-bit immediate operand"
-        },                 {
+        }, {
             "Name": "word",
             "Size": 16,
             "Type": "Unsigned Integer - Little Endian",
             "Description": "16-bit immediate operand"
-        },                 {
+        }, {
             "Name": "tab[x]",
             "Size": 0,
             "Type": "Definition",

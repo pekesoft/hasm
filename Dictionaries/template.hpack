@@ -1,0 +1,21 @@
+{
+    "Packages": [
+        {
+            "Name": "",
+            "Socket": "",
+            "Pins": 0,
+            "Description": "",
+            "Datasheet": "",
+            "Pinout": [
+                {
+                    "Number": 0,
+                    "Type": "",
+                    "Symbol": [""],
+                    "Direction": [""],
+                    "Description": ""
+                }
+            ],
+            "Info": [""]
+        }
+    ]
+}
