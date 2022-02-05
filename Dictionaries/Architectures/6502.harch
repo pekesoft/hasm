@@ -19,7 +19,7 @@
         "MIPS": [0, 0, "MHz"],
         "DataBus": 8,
         "AddressBus": 16,
-        "AddressType": "",
+        "AddressType": "Direct",
         "Transistors": [3510, 3218],
         "TechnologyNode": [""],
         "CommTech": [""],
@@ -55,7 +55,7 @@
                 }
             ]
         }, {
-            "Name": "PF",
+            "Name": "F",
             "Size": 8,
             "Access": "Indirect",
             "DefaultValue": "00h",

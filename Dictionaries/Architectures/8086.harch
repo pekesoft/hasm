@@ -34,28 +34,218 @@
 
     "RegisterFile": [
         {
-            "Name": "",
-            "Size": 0,
+            "Name": "F",
+            "Size": 16,
             "Access": "",
             "DefaultValue": "",
-            "Description": "",
-            "Registers": [
+            "Description": "Flags Register",
+            "Flags": [
                 {
-                    "Name": "",
-                    "Size": 0,
-                    "Access": "",
-                    "DefaultValue": "",
-                    "Description": "",
-                    "Flags": [
-                        {
-                            "bit": 0,
-                            "ShortName": "",
-                            "Name": [""],
-                            "Description": ""
-                        }
-                    ]
+                    "bit": 15,
+                    "Description": "Not used"
+                }, {
+                    "bit": 14,
+                    "Description": "Not used"
+                }, {
+                    "bit": 13,
+                    "Description": "Not used"
+                }, {
+                    "bit": 12,
+                    "Description": "Not used"
+                }, {
+                    "bit": 11,
+                    "ShortName": "O",
+                    "Name": ["Overflow"],
+                    "Description": "Overflow flag"
+                }, {
+                    "bit": 10,
+                    "ShortName": "D",
+                    "Name": ["Direction"],
+                    "Description": "Direction flag"
+                }, {
+                    "bit": 9,
+                    "ShortName": "I",
+                    "Name": ["Interrupt"],
+                    "Description": "Interrupt flag"
+                }, {
+                    "bit": 8,
+                    "ShortName": "T",
+                    "Name": ["Trap"],
+                    "Description": "Trap flag"
+                }, {
+                    "bit": 7,
+                    "ShortName": "S",
+                    "Name": ["Sign"],
+                    "Description": "Sign flag"
+                }, {
+                    "bit": 6,
+                    "ShortName": "Z",
+                    "Name": ["Zero"],
+                    "Description": "Zero Flag"
+                }, {
+                    "bit": 5,
+                    "Description": "Not used"
+                }, {
+                    "bit": 4,
+                    "ShortName": "A",
+                    "Name": ["AuxCarry"],
+                    "Description": "Auxiliary Carry flag"
+                }, {
+                    "bit": 3,
+                    "Description": "Not used"
+                }, {
+                    "bit": 2,
+                    "ShortName": "P",
+                    "Name": ["Parity"],
+                    "Description": "Parity flag"
+                }, {
+                    "bit": 1,
+                    "Description": "Not used"
+                }, {
+                    "bit": 0,
+                    "ShortName": "C",
+                    "Name": ["Carry"],
+                    "Description": "Carry Flag"
                 }
             ]
+        }, {
+            "Name": "AX",
+            "Size": 16,
+            "Access": "True",
+            "DefaultValue": "0000H",
+            "Description": "Accumulator Register 16-bit",
+            "Registers": [
+                {
+                    "Name": "AH",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Accumulator High 8 bit register"
+                }, {
+                    "Name": "AL",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Accumulator Low 8 bit register"
+                }
+            ]
+        }, {
+            "Name": "BX",
+            "Size": 0,
+            "Access": "True",
+            "DefaultValue": "0000h",
+            "Description": "Base Register 16-bit",
+            "Registers": [
+                {
+                    "Name": "BH",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Base High 8 bit register"
+                }, {
+                    "Name": "BL",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Base Low 8 bit register"
+                }
+            ]
+        }, {
+            "Name": "CX",
+            "Size": 16,
+            "Access": "True",
+            "DefaultValue": "0000h",
+            "Description": "Counter Register 16-bit",
+            "Registers": [
+                {
+                    "Name": "CH",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Counter High 8 bit register"
+                }, {
+                    "Name": "CL",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Counter Low 8 bit register"
+                }
+            ]
+        }, {
+            "Name": "DX",
+            "Size": 16,
+            "Access": "True",
+            "DefaultValue": "0000h",
+            "Description": "Data Register 16-bit",
+            "Registers": [
+                {
+                    "Name": "DH",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Data High 8 bit register"
+                }, {
+                    "Name": "DL",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Data Low 8 bit register"
+                }
+            ]
+        }, {
+            "Name": "SI",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "",
+            "Description": "Source Index Register 16-bit"
+        }, {
+            "Name": "DI",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "",
+            "Description": "Destination Index Register 16-bit"
+        }, {
+            "Name": "BP",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "",
+            "Description": "Base Pointer Register 16-bit"
+        }, {
+            "Name": "SP",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "",
+            "Description": "Stack Pointer Register 16-bit"
+        }, {
+            "Name": "CS",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "",
+            "Description": "Code Segment Register 16-bit"
+        }, {
+            "Name": "DS",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "",
+            "Description": "Data Segment Register 16-bit"
+        }, {
+            "Name": "ES",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "",
+            "Description": "Extra Segment Register 16-bit"
+        }, {
+            "Name": "SS",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "",
+            "Description": "Stack Segment Register 16-bit"
+        }, {
+            "Name": "IP",
+            "Size": 16,
+            "Access": "",
+            "DefaultValue": "",
+            "Description": "Instruction Pointer Register 16-bit"
         }
     ]
 }
