@@ -1,25 +1,26 @@
 {
     "Info": {
-        "Name": "",
+        "Name": "6502",
         "Alias": "",
-        "Inherits": "",
-        "Succesors": [""],
-        "Type": "",
-        "Architecture": "",
-        "Endianness": "",
-        "Vendor": "",
-        "OtherVendors": [""],
-        "Developers": [""],
-        "Wiki": "",
-        "Release": "",
+        "Inherits": "6800",
+        "Succesors": ["W65C02", "W65C816"],
+        "Family": ["6502"],
+        "Type": ["CISC", "RISC-like"],
+        "Architecture": "Von Neumann",
+        "Endianness": "Little Endian",
+        "Vendor": "MOS Technology",
+        "OtherVendors": ["Rockwell International", "Synertek"],
+        "Developers": ["Bill Mensch", "Chuck Peddle", "Harry Bawcom", "Mike Janes", "Sydney-Anne Holt"],
+        "Wiki": "https://en.wikipedia.org/wiki/MOS_Technology_6502",
+        "Release": "1975",
         "EndProduction": "",
-        "MHz": [0],
+        "MHz": [1, 3],
         "MFLOPS": [0],
         "MIPS": [0, 0, "MHz"],
-        "DataBus": 0,
-        "AddressBus": 0,
+        "DataBus": 8,
+        "AddressBus": 16,
         "AddressType": "",
-        "Transistors": [0],
+        "Transistors": [3510, 3218],
         "TechnologyNode": [""],
         "CommTech": [""],
         "Technologies": [""],
@@ -31,114 +32,100 @@
         ]
     },
 
-    "Packages": [
-        {
-            "Name": "",
-            "Socket": "",
-            "Pins": 0,
-            "Description": "",
-            "Datasheet": "",
-            "Pinout": [
-                {
-                    "Number": 0,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
-                }
-            ],
-            "Info": [""]
-        }
-    ],
-
     "RegisterFile": [
         {
-            "Name": "",
-            "Size": 0,
-            "Access": "",
-            "DefaultValue": "",
-            "Description": "",
+            "Name": "StackPointer",
+            "Size": 16,
+            "Access": "Half",
+            "DefaultValue": "0100h",
+            "Description": "Stack Pointer 16 bit Register",
             "Registers": [
                 {
-                    "Name": "",
-                    "Size": 0,
-                    "Access": "",
-                    "DefaultValue": "",
-                    "Description": "",
-                    "Flags": [
-                        {
-                            "bit": 0,
-                            "ShortName": "",
-                            "Name": [""],
-                            "Description": ""
-                        }
-                    ]
+                    "Name": "Fixed",
+                    "Size": 8,
+                    "Access": "False",
+                    "DefaultValue": "01h",
+                    "Description": "Fixed Prefix Value"
+                }, {
+                    "Name": "SP",
+                    "Size": 8,
+                    "Access": "True",
+                    "DefaultValue": "00h",
+                    "Description": "Stack Pointer 8 bit Register"
                 }
             ]
-        }
-    ],
-
-    "Decode" : [
-        {
-            "Definitions": [
+        }, {
+            "Name": "PF",
+            "Size": 8,
+            "Access": "Indirect",
+            "DefaultValue": "00h",
+            "Description": "Processor Flags Register",
+            "Flags": [
                 {
-                    "Name": "",
-                    "Size": 0,
-                    "Type": "",
+                    "bit": 7,
+                    "ShortName": "N",
+                    "Name": ["Negative"],
+                    "Description": "Negative Flag"
+                }, {
+                    "bit": 6,
+                    "ShortName": "V",
+                    "Name": ["Overflow"],
+                    "Description": "Overflow Flag"
+                }, {
+                    "bit": 5,
+                    "ShortName": "-",
+                    "Description": "Not Used"
+                }, {
+                    "bit": 4,
+                    "ShortName": "B",
+                    "Name": [""],
                     "Description": ""
-                }
-            ],
-            "Tables": [
-                {
-                    "Name": "",
-                    "Size": 0,
-                    "TableType": "",
-                    "Description": "",
-                    "Entries": [
-                        {
-                            "Index": [0],
-                            "Name": "",
-                            "Size": 0,
-                            "Description": "",
-                            "HASM": "",
-                            "Alias": [""],
-                            "Cycles": ["Min", 0,
-                                       "Max", 0]
-                        }
-                    ]
-                }
-            ],
-            "Instructions": [
-                {
-                    "Segment": "",
-                    "Value": 0,
-                    "Bytes": 0,
-                    "Cycles": ["Min", 0,
-                               "Max", 0],
-                    "Group": "",
-                    "Description": "",
-                    "ASM": "",
-                    "Mnemonic": "",
-                    "Destination": [""],
-                    "Source": [""],
-                    "HASM": "",
-                    "Alias": [""],
-                    "HDest": [""],
-                    "HOpers": "",
-                    "HOper1": "",
-                    "HSource1": [""],
-                    "HOper2": "",
-                    "HSource2": [""],
-                    "HComplement": "",
-                    "Subsegments": [
-                        {
-
-                        }
-                    ]
+                }, {
+                    "bit": 3,
+                    "ShortName": "D",
+                    "Name": ["BCD"],
+                    "Description": "BCD Flag"
+                }, {
+                    "bit": 2,
+                    "ShortName": "I",
+                    "Name": ["Interrupt"],
+                    "Description": "Interrupt Disable Flag"
+                }, {
+                    "bit": 1,
+                    "ShortName": "Z",
+                    "Name": ["Zero"],
+                    "Description": "Zero Flag"
+                }, {
+                    "bit": 0,
+                    "ShortName": "C",
+                    "Name": ["Carry"],
+                    "Description": "Carry Flag"
                 }
             ]
-
+        }, {
+            "Name": "A",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Accumulator Register"
+        }, {
+            "Name": "X",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "X Index Register"
+        }, {
+            "Name": "Y",
+            "Size": 8,
+            "Access": "True",
+            "DefaultValue": "00h",
+            "Description": "Y Index Register"
+        }, {
+            "Name": "PC",
+            "Size": 16,
+            "Access": "Indirect",
+            "DefaultValue": "0000h",
+            "Description": "Program Counter Register"
         }
     ]
-
 }

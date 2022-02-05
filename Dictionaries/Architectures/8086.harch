@@ -4,6 +4,7 @@
         "Alias": "",
         "Inherits": "8085",
         "Succesors": ["80186"],
+        "Family": ["x86", "x86-16"],
         "Type": "CISC",
         "Architecture": "Von Neumann",
         "Endianness": "Little Endian",
@@ -31,26 +32,6 @@
         ]
     },
 
-    "Packages": [
-        {
-            "Name": "",
-            "Socket": "",
-            "Pins": 0,
-            "Description": "",
-            "Datasheet": "",
-            "Pinout": [
-                {
-                    "Number": 0,
-                    "Type": "",
-                    "Symbol": [""],
-                    "Direction": [""],
-                    "Description": ""
-                }
-            ],
-            "Info": [""]
-        }
-    ],
-
     "RegisterFile": [
         {
             "Name": "",
@@ -76,69 +57,5 @@
                 }
             ]
         }
-    ],
-
-    "Decode" : [
-        {
-            "Definitions": [
-                {
-                    "Name": "",
-                    "Size": 0,
-                    "Type": "",
-                    "Description": ""
-                }
-            ],
-            "Tables": [
-                {
-                    "Name": "",
-                    "Size": 0,
-                    "TableType": "",
-                    "Description": "",
-                    "Entries": [
-                        {
-                            "Index": [0],
-                            "Name": "",
-                            "Size": 0,
-                            "Description": "",
-                            "HASM": "",
-                            "Alias": [""],
-                            "Cycles": ["Min", 0,
-                                       "Max", 0]
-                        }
-                    ]
-                }
-            ],
-            "Instructions": [
-                {
-                    "Segment": "",
-                    "Value": 0,
-                    "Bytes": 0,
-                    "Cycles": ["Min", 0,
-                               "Max", 0],
-                    "Group": "",
-                    "Description": "",
-                    "ASM": "",
-                    "Mnemonic": "",
-                    "Destination": [""],
-                    "Source": [""],
-                    "HASM": "",
-                    "Alias": [""],
-                    "HDest": [""],
-                    "HOpers": "",
-                    "HOper1": "",
-                    "HSource1": [""],
-                    "HOper2": "",
-                    "HSource2": [""],
-                    "HComplement": "",
-                    "Subsegments": [
-                        {
-
-                        }
-                    ]
-                }
-            ]
-
-        }
     ]
-
 }
