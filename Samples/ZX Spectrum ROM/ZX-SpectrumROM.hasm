@@ -93,14 +93,13 @@ PrintChar:
         // 3) in the edit buffer if parsing a direct command or a new BASIC line.
         // 4) in workspace if accepting input but not that from INPUT LINE.
 
-// GET-CHAR
-L0018:  HL = ($5C5D)      // fetch the address from CH_ADD.
+GetChar:  
+        HL = ($5C5D)      // fetch the address from CH_ADD.
         A = (HL)          // use it to pick up current character.
 
-// TEST-CHAR
-L001C:  Call L007D           // routine SKIP-OVER tests if the character is
-                                // relevant.
-        If !Carry Return              // Return if it is significant.
+TestChar:  
+        Call L007D           // routine SKIP-OVER tests if the character is relevant.
+        If !Carry Return     // Return if it is significant.
 
 // ------------------------------------
 // THE 'COLLECT NEXT CHARACTER' RESTART
@@ -109,9 +108,9 @@ L001C:  Call L007D           // routine SKIP-OVER tests if the character is
 //   called repeatedly to step along the line.  It is used 83 times.
 
 // NEXT-CHAR
-L0020:  Call L0074           // routine CH-ADD+1 fetches the next immediate
+NextChar:  Call L0074           // routine CH-ADD+1 fetches the next immediate
                                 // character.
-        Jump To L001C           // jump back to TEST-CHAR until a valid
+        Jump To TestChar           // jump back to TEST-CHAR until a valid
                                 // character is found.
 
 // ---
@@ -187,9 +186,9 @@ KeyINT:
 // ---------------------
 // THE 'ERROR-2' ROUTINE
 // ---------------------
-//   A continuation of the code at 0008.
-//   The error code is stored and after clearing down stacks, an indirect jump
-//   is made to MAIN-4, etc. to handle the error.
+        // A continuation of the code at 0008.
+        // The error code is stored and after clearing down stacks, an indirect jump
+        // is made to MAIN-4, etc. to handle the error.
 
 Error-2:  
         Pull HL                 // drop the return address - the location
@@ -197,9 +196,9 @@ Error-2:
         L = (HL)                // fetch the error code that follows.
                                 // (nice to see this instruction used.)
 
-//   Note. this entry point is used when out of memory at REPORT-4.
-//   The L register has been loaded with the report code but X-PTR is not
-//   updated.
+        // Note. this entry point is used when out of memory at REPORT-4.
+        // The L register has been loaded with the report code but X-PTR is not
+        // updated.
 
 Error-3:  
         (IY + $00) = L          // Store it in the system variable ERR_NR.
@@ -217,39 +216,38 @@ Error-3:
                                 // variables area and then indirectly to MAIN-4,
                                 // etc.
 
-// ---
-
+<data>
         Byte $FF, $FF, $FF   // Unused locations
         Byte $FF, $FF, $FF   // before the fixed-position
         Byte $FF             // NMI routine.
+        </data>
 
 // ------------------------------------
 // THE 'NON-MASKABLE INTERRUPT' ROUTINE
 // ------------------------------------
-//
-//   There is no NMI switch on the standard Spectrum or its peripherals.
-//   When the NMI line is held low, then no matter what the Z80 was doing at
-//   the time, it will now execute the code at 66 Hex.
-//   This Interrupt Service Routine will jump to location zero if the contents
-//   of the system variable NMIADD are zero or return if the location holds a
-//   non-zero address.   So attaching a simple switch to the NMI as in the book
-//   "Spectrum Hardware Manual" causes a reset.  The logic was obviously
-//   intended to work the other way.  Sinclair Research said that, since they
-//   had never advertised the NMI, they had no plans to fix the error "until
-//   the opportunity arose".
-//
-//   Note. The location NMIADD was, in fact, later used by Sinclair Research
-//   to enhance the text channel on the ZX Interface 1.
-//   On later Amstrad-made Spectrums, and the Brazilian Spectrum, the logic of
-//   this routine was indeed reversed but not as at first intended.
-//
-//   It can be deduced by looking elsewhere in this ROM that the NMIADD system
-//   variable pointed to L121C and that this enabled a Warm Restart to be
-//   performed at any time, even while playing machine code games, or while
-//   another Spectrum has been allowed to gain control of this one.
-//
-//   Software houses would have been able to protect their games from attack by
-//   placing two zeros in the NMIADD system variable.
+        // There is no NMI switch on the standard Spectrum or its peripherals.
+        // When the NMI line is held low, then no matter what the Z80 was doing at
+        // the time, it will now execute the code at 66 Hex.
+        // This Interrupt Service Routine will jump to location zero if the contents
+        // of the system variable NMIADD are zero or return if the location holds a
+        // non-zero address.   So attaching a simple switch to the NMI as in the book
+        // "Spectrum Hardware Manual" causes a reset.  The logic was obviously
+        // intended to work the other way.  Sinclair Research said that, since they
+        // had never advertised the NMI, they had no plans to fix the error "until
+        // the opportunity arose".
+        //
+        // Note. The location NMIADD was, in fact, later used by Sinclair Research
+        // to enhance the text channel on the ZX Interface 1.
+        // On later Amstrad-made Spectrums, and the Brazilian Spectrum, the logic of
+        // this routine was indeed reversed but not as at first intended.
+        //
+        // It can be deduced by looking elsewhere in this ROM that the NMIADD system
+        // variable pointed to L121C and that this enabled a Warm Restart to be
+        // performed at any time, even while playing machine code games, or while
+        / another Spectrum has been allowed to gain control of this one.
+        //
+        // Software houses would have been able to protect their games from attack by
+        // placing two zeros in the NMIADD system variable.
 
 // RESET
 L0066:  Push AF              // save the
@@ -12520,7 +12518,7 @@ L2734:  Pull DE              // fetch last priority and operation
 // the last priority was greater or equal this one.
 
         A &= A               // if it is zero then so is this
-        If Zero Go To L0018         // jump to exit via get-char pointing at
+        If Zero Go To GetChar         // jump to exit via get-char pointing at
                                 // next character.
                                 // This may be the character after the
                                 // expression or, if exiting a recursive call,
