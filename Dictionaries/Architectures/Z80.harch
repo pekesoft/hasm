@@ -9,7 +9,7 @@
         "Endianness": "Little Endian",
         "Vendor": "Zilog",
         "OtherVendors": ["Mostek", "Synertek", "SGS-Thomson (STM)", "NEC", "Sharp", "Toshiba", "Rohm", "GoldStar (LG)", "Hitachi", "National Semiconductor"],
-        "Developers": ["Federico Faggin", "Masatoshi Shima"],
+        "Designers": ["Federico Faggin", "Masatoshi Shima"],
         "wiki": "https://en.wikipedia.org/wiki/Zilog_Z80",
         "Release": "1976",
         "EndProduction": "",

@@ -10,7 +10,7 @@
         "Endianness": "Little Endian",
         "Vendor": "Intel",
         "OtherVendors": ["AMD", "Mitsubishi", "NEC", "NZPP Novosibirsk", "OKI", "Siemens", "Toshiba"],
-        "Developers": [""],
+        "Designers": [""],
         "Wiki": "https://en.wikipedia.org/wiki/Intel_8085",
         "Release": "1976",
         "EndProduction": "2000",

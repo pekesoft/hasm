@@ -9,7 +9,7 @@
         "Endianness": "Big Endian",
         "Vendor": "Intel",
         "OtherVendors": [""],
-        "Developers": ["Marcian \"Ted\" Hoff", "Federico Faggin", "Masatoshi Shima"],
+        "Designers": ["Marcian \"Ted\" Hoff", "Federico Faggin", "Masatoshi Shima"],
         "Wiki": "http://en.wikipedia.org/wiki/4004",
         "Release": "1971",
         "EndProduction": "1981",

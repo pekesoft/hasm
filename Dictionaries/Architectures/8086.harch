@@ -10,7 +10,7 @@
         "Endianness": "Little Endian",
         "Vendor": "Intel",
         "OtherVendors": ["AMD", "NEC", "Fujitsu", "Harris (Intersil)", "OKI", "Siemens", "Texas Instruments", "Mitsubishi", "Panasonic (Matsushita)"],
-        "Developers": ["Stephen Paul Morse", "Bruce Ravenel", "Jim McKevitt", "John Bayliss", "Bill Pohlman"],
+        "Designers": ["Stephen Paul Morse", "Bruce Ravenel", "Jim McKevitt", "John Bayliss", "Bill Pohlman"],
         "Wiki": "https://en.wikipedia.org/wiki/8086",
         "Release": "1978",
         "EndProduction": "1998",

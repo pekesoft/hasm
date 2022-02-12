@@ -10,7 +10,7 @@
         "Endianness": "Little Endian",
         "Vendor": "Intel",
         "OtherVendors": [""],
-        "Developers": [""],
+        "Designers": [""],
         "Wiki": "https://en.wikipedia.org/wiki/8080",
         "Release": "1974",
         "EndProduction": "1990",

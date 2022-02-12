@@ -10,7 +10,7 @@
         "Endianness": "Little Endian",
         "Vendor": "MOS Technology",
         "OtherVendors": ["Rockwell International", "Synertek"],
-        "Developers": ["Bill Mensch", "Chuck Peddle", "Harry Bawcom", "Mike Janes", "Sydney-Anne Holt"],
+        "Designers": ["Bill Mensch", "Chuck Peddle", "Harry Bawcom", "Mike Janes", "Sydney-Anne Holt"],
         "Wiki": "https://en.wikipedia.org/wiki/MOS_Technology_6502",
         "Release": "1975",
         "EndProduction": "",

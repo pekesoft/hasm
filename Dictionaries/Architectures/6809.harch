@@ -9,7 +9,7 @@
         "Endianness": "",
         "Vendor": "Motorola",
         "OtherVendors": ["Hitachi"],
-        "Developers": ["Terry Ritter", "Joel Boney"],
+        "Designers": ["Terry Ritter", "Joel Boney"],
         "Wiki": "en.wikipedia.org/wiki/6809",
         "Release": "1978",
         "EndProduction": "",
