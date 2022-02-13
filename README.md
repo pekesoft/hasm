@@ -43,3 +43,9 @@ Esta es una parte muy potente de hasm, ya que permite redefinir palabras clave d
 Esto posibilita múltiples opciones muy interesantes, que van desde la parte educativa y el aprendizaje, la personalización del lenguaje y hasta la programación en equipo en diferentes idiomas. Incluso sirve para preservar seguridad para el código propietario, ya que se puede utilizar para ofuscar el código fuente.
 
 Los diccionarios de alias son traducibles unos entre otros y están ordenados jerárquicamente.
+
+## Herramientas
+
+### hasm-vscode
+
+En https://github.com/pekesoft/hasm-vscode podéis encontrar la extensión para el coloreado del lenguaje usando Visual Studio Code.
