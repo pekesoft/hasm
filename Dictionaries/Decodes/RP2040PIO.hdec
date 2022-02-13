@@ -9,6 +9,155 @@
     ],
     "Tables": [
         {
+            "Name": "opcode",
+            "Size": 16,
+            "TableType": "opcode",
+            "Description": "Opcode structure",
+            "Entries": [
+                {
+                    "Index": [15, 14, 13],
+                    "Name": "x",
+                    "Size": 3,
+                    "Description": "Function opcode"
+                }, {
+                    "Index": [12, 11, 10, 9, 8],
+                    "Name": "d",
+                    "Size": 5,
+                    "Description": "Delay / Side-set opcode"
+                }, {
+                    "Index": [7, 6, 5],
+                    "Name": "c",
+                    "Size": 0,
+                    "Description": "Conditions & Locations opcode",
+                    "Entries": [
+                        {
+                            "Index": [7],
+                            "Name": "v",
+                            "Size": 1,
+                            "Description": "Value opcode"
+                        }, {
+                            "Index": [6, 5],
+                            "Name": "s",
+                            "Size": 2,
+                            "Description": "Source opcode",
+                            "Entries": [
+                                {
+                                    "Index": [6],
+                                    "Name": "p",
+                                    "Size": 1
+                                }, {
+                                    "Index": [5],
+                                    "Name": "q",
+                                    "Size": 1
+                                }
+                            ]
+                        }
+                    ]
+                }, {
+                    "Index": [4, 3, 2, 1, 0],
+                    "Name": "a",
+                    "Size": 5,
+                    "Description": "Address & parameters opcode",
+                    "Entries": [
+                        {
+                            "Index": [4, 3],
+                            "Name": "o",
+                            "Description": "Op opcode",
+                            "Size": 2
+                        }, {
+                            "Index": [2, 1, 0],
+                            "Name": "z",
+                            "Description": "Source opcode",
+                            "Size": 3
+                        }
+                    ]
+                }
+            ]
+        }, {
+            "Name": "fun",
+            "Size": 3,
+            "TableType": "functions",
+            "Description": "Set of PIO functions",
+            "Entries": [
+                {
+                    "Index": [0],
+                    "Name": "JMP",
+                    "Description": "",
+                    "HASM": "",
+                    "Alias": [""],
+                    "Cycles": ["Min", 0,
+                                "Max", 0]
+                }, {
+                    "Index": [1],
+                    "Name": "WAIT",
+                    "Description": "",
+                    "HASM": "",
+                    "Alias": [""],
+                    "Cycles": ["Min", 0,
+                                "Max", 0]
+                }, {
+                    "Index": [2],
+                    "Name": "IN",
+                    "Description": "",
+                    "HASM": "",
+                    "Alias": [""],
+                    "Cycles": ["Min", 0,
+                                "Max", 0]
+                }, {
+                    "Index": [3],
+                    "Name": "OUT",
+                    "Description": "",
+                    "HASM": "",
+                    "Alias": [""],
+                    "Cycles": ["Min", 0,
+                                "Max", 0]
+                }, {
+                    "Index": [4],
+                    "Name": "PUSH",
+                    "Condition": ["v", 0,
+                                  "a", 0],
+                    "Description": "",
+                    "HASM": "",
+                    "Alias": [""],
+                    "Cycles": ["Min", 0,
+                                "Max", 0]
+                }, {
+                    "Index": [4],
+                    "Name": "PULL",
+                    "Condition": ["v", 1,
+                                  "a", 0],
+                    "Description": "",
+                    "HASM": "",
+                    "Alias": [""],
+                    "Cycles": ["Min", 0,
+                                "Max", 0]
+                }, {
+                    "Index": [5],
+                    "Name": "MOV",
+                    "Description": "",
+                    "HASM": "",
+                    "Alias": [""],
+                    "Cycles": ["Min", 0,
+                                "Max", 0]
+                }, {
+                    "Index": [6],
+                    "Name": "IRQ",
+                    "Description": "",
+                    "HASM": "",
+                    "Alias": [""],
+                    "Cycles": ["Min", 0,
+                                "Max", 0]
+                }, {
+                    "Index": [7],
+                    "Name": "SET",
+                    "Description": "",
+                    "HASM": "",
+                    "Alias": [""],
+                    "Cycles": ["Min", 0,
+                                "Max", 0]
+                }
+            ]
+        }, , {
             "Name": "",
             "Size": 0,
             "TableType": "",

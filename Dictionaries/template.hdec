@@ -17,12 +17,13 @@
                 {
                     "Index": [0],
                     "Name": "",
+                    "Condition": ["", 0],
                     "Size": 0,
                     "Description": "",
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
                 }
             ]
         }
@@ -33,7 +34,7 @@
             "Value": 0,
             "Bytes": 0,
             "Cycles": ["Min", 0,
-                        "Max", 0],
+                       "Max", 0],
             "Group": "",
             "Description": "",
             "ASM": "",
