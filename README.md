@@ -28,6 +28,8 @@ Este diccionario define los distintos empaquetados del dispositivo, así como ca
 
 Este es el más importante, ya que define mediante tablas todas las operaciones disponibles, así como su distribución y equivalencias en HASM.
 
+Por el momento estamos trabajando en las tablas de decodificación de Z80 y del PIO de RP2040.
+
 ### hopc: Tablas de Opcodes
 
 Con la tabla anterior se genera mediante producto cartesiano todas las tablas de opcodes, que son las que utiliza el compilador para procesar el lenguaje.
@@ -49,3 +51,17 @@ Los diccionarios de alias son traducibles unos entre otros y están ordenados je
 ### hasm-vscode
 
 En https://github.com/pekesoft/hasm-vscode podéis encontrar la extensión para el coloreado del lenguaje usando Visual Studio Code.
+
+## Ejemplos de Código
+
+Con el fin de probar el código de hasm y poder evaluar su gramática, claridad y uso mientras estamos en la fase de investigación y experimentación hemos creado algunos ejemplos reales basados en piezas de código historicas, en el que acompañamos el ensamblador real con la versión traducida a hasm.
+
+Eso, además de permitirnos conocer nuestro propio lenguaje, nos permite además analizarlo de una forma más pragmática, permitiéndonos corregir y cambiar aspectos que a la larga serían odiosos, poco práctico, o rompería las reglas del lenguaje.
+
+### ZX Spectrum ROM
+
+Se trata de la ROM real del ZX Spectrum de 1982 de Sinclair, ideal para probar el hasm sobre asm de Z80.
+
+## WozMon
+
+Más histórico aun es este código escrito por el gran Steve Wozniak, y que era todo el software que venía incluído en la ROM del legendario Apple-I. Esta pieza es ideal para analizar el hasm sobre asm de 6502. (En Construcción)
