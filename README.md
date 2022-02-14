@@ -12,6 +12,12 @@ Por eso nace la idea de HASM, un lenguaje de programación en bajo nivel que rec
 
 De esta manera, las reglas del lenguaje están claras, así que sólo hay que limitarse a las diferencias y peculiaridades de la arquitectura, y no al lenguaje propiamente dicho.
 
+## Herramientas
+
+### hasm-vscode
+
+En https://github.com/pekesoft/hasm-vscode podéis encontrar la extensión para el coloreado del lenguaje usando Visual Studio Code.
+
 ## Diccionarios
 
 Las arquitecturas y funcionalidades de cada dispositivo están definidas en una serie de diccionarios estructurados de la siguiente manera:
@@ -46,12 +52,6 @@ Esto posibilita múltiples opciones muy interesantes, que van desde la parte edu
 
 Los diccionarios de alias son traducibles unos entre otros y están ordenados jerárquicamente.
 
-## Herramientas
-
-### hasm-vscode
-
-En https://github.com/pekesoft/hasm-vscode podéis encontrar la extensión para el coloreado del lenguaje usando Visual Studio Code.
-
 ## Ejemplos de Código
 
 Con el fin de probar el código de hasm y poder evaluar su gramática, claridad y uso mientras estamos en la fase de investigación y experimentación hemos creado algunos ejemplos reales basados en piezas de código historicas, en el que acompañamos el ensamblador real con la versión traducida a hasm.
@@ -62,6 +62,6 @@ Eso, además de permitirnos conocer nuestro propio lenguaje, nos permite además
 
 Se trata de la ROM real del ZX Spectrum de 1982 de Sinclair, ideal para probar el hasm sobre asm de Z80.
 
-## WozMon
+### WozMon
 
 Más histórico aun es este código escrito por el gran Steve Wozniak, y que era todo el software que venía incluído en la ROM del legendario Apple-I. Esta pieza es ideal para analizar el hasm sobre asm de 6502. (En Construcción)
