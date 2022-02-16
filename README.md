@@ -56,7 +56,7 @@ Los diccionarios de alias son traducibles unos entre otros y están ordenados je
 
 Con el fin de probar el código de hasm y poder evaluar su gramática, claridad y uso mientras estamos en la fase de investigación y experimentación hemos creado algunos ejemplos reales basados en piezas de código historicas, en el que acompañamos el ensamblador real con la versión traducida a hasm.
 
-Eso, además de permitirnos conocer nuestro propio lenguaje, nos permite además analizarlo de una forma más pragmática, permitiéndonos corregir y cambiar aspectos que a la larga serían odiosos, poco práctico, o rompería las reglas del lenguaje.
+Eso, además de permitirnos conocer nuestro propio lenguaje, nos permite además analizarlo de una forma más pragmática, permitiéndonos corregir y cambiar aspectos que a la larga serían odiosos, poco prácticos, o rompería las reglas del lenguaje.
 
 ### ZX Spectrum ROM
 

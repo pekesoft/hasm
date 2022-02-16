@@ -59,7 +59,7 @@
         // Interface 1 or Disciple Disk Interface.  This was not an original design
         // concept and not all errors pass through here.
 
-Error-1:  
+[0008] Error-1:  
         HL = ($5C5D)            // Fetch the character address from CH_ADD.
         ($5C5F) = HL            // Copy it to the error pointer X_PTR.
         Jump To Error-2         // Forward to continue at ERROR-2.
@@ -73,7 +73,7 @@ Error-1:
         // preserve any of the current main registers (HL, DE, BC).
         // This restart is used 21 times.
 
-PrintChar:  
+[0010] PrintChar:  
         Go To PrintChar2           // Jump forward to continue at PRINT-A-2.
 
 <data>
@@ -93,11 +93,11 @@ PrintChar:
         // 3) in the edit buffer if parsing a direct command or a new BASIC line.
         // 4) in workspace if accepting input but not that from INPUT LINE.
 
-GetChar:  
+[0018] GetChar:  
         HL = ($5C5D)      // fetch the address from CH_ADD.
         A = (HL)          // use it to pick up current character.
 
-TestChar:  
+[001C] TestChar:  
         Call L007D           // routine SKIP-OVER tests if the character is relevant.
         If !Carry Return     // Return if it is significant.
 
@@ -108,7 +108,7 @@ TestChar:
 //   called repeatedly to step along the line.  It is used 83 times.
 
 // NEXT-CHAR
-NextChar:  Call L0074           // routine CH-ADD+1 fetches the next immediate
+[0020] NextChar:  Call L0074           // routine CH-ADD+1 fetches the next immediate
                                 // character.
         Jump To TestChar           // jump back to TEST-CHAR until a valid
                                 // character is found.
@@ -155,7 +155,7 @@ L0030:  Push BC              // Save number of spaces.
 //   to access system variables and flags so a user-written program must
 //   disable interrupts to make use of the IY register.
 
-MaskINT:  
+[0038] MaskINT:  
         Push AF                         // Save the registers that will be used but not
         Push HL                         // the IY register unfortunately.
         HL = ($5C78)                    // Fetch the first two bytes at FRAMES1.
@@ -168,7 +168,7 @@ MaskINT:
 
 //   Now save the rest of the main registers and read and decode the keyboard.
 
-KeyINT:  
+[0048] KeyINT:  
         Push BC                 // Save the other main registers.
         Push DE                 //
 
@@ -190,7 +190,7 @@ KeyINT:
         // The error code is stored and after clearing down stacks, an indirect jump
         // is made to MAIN-4, etc. to handle the error.
 
-Error-2:  
+[0053] Error-2:  
         Pull HL                 // drop the return address - the location
                                 // after the RST 08H instruction.
         L = (HL)                // fetch the error code that follows.
@@ -200,7 +200,7 @@ Error-2:
         // The L register has been loaded with the report code but X-PTR is not
         // updated.
 
-Error-3:  
+[0055] Error-3:  
         (IY + $00) = L          // Store it in the system variable ERR_NR.
         SP = ($5C3D)            // ERR_SP points to an error handler on the
                                 // machine stack. There may be a hierarchy
@@ -738,7 +738,8 @@ L02AB:  L--              // cycles 2F>2E>2D>2C>2B>2A>29>28 for
 //
 
 // KEYBOARD
-Keyboard:  Call L028E           // routine KEY-SCAN
+[02BF] Keyboard:  
+        Call L028E           // routine KEY-SCAN
         If !Zero Return              // return if invalid combinations
 
 //   then decrease the counters within the two key-state maps
@@ -5342,7 +5343,8 @@ L11B7:  Interrupts = False              // Disable Interrupts - machine stack wi
 //   if coming from START or NEW.
 
 // START-NEW
-StartNew:  B = A             // Save the flag to control later branching.
+[11CB] StartNew:  
+        B = A             // Save the flag to control later branching.
 
         A = $07           // Select a white border
         (FEh) <-- AA         // and set it now by writing to a port.

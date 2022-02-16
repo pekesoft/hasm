@@ -86,7 +86,7 @@
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
                 }, {
                     "Index": [1],
                     "Name": "WAIT",
@@ -94,7 +94,7 @@
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
                 }, {
                     "Index": [2],
                     "Name": "IN",
@@ -102,7 +102,7 @@
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
                 }, {
                     "Index": [3],
                     "Name": "OUT",
@@ -110,7 +110,7 @@
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
                 }, {
                     "Index": [4],
                     "Name": "PUSH",
@@ -120,7 +120,7 @@
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
                 }, {
                     "Index": [4],
                     "Name": "PULL",
@@ -130,7 +130,7 @@
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
                 }, {
                     "Index": [5],
                     "Name": "MOV",
@@ -138,7 +138,7 @@
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
                 }, {
                     "Index": [6],
                     "Name": "IRQ",
@@ -146,7 +146,7 @@
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
                 }, {
                     "Index": [7],
                     "Name": "SET",
@@ -154,7 +154,99 @@
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
+                }
+            ]
+        }, {
+            "Name": "cond",
+            "Size": 0,
+            "TableType": "definitions",
+            "Description": "Conditions structure",
+            "Entries": [
+                {
+                    "Index": [0],
+                    "Name": "",
+                    "Description": "(Always) No Condition",
+                    "HASM": "",
+                    "Alias": [""]
+                }, {
+                    "Index": [1],
+                    "Name": "!X",
+                    "Description": "Scratch X Zero",
+                    "HASM": "",
+                    "Alias": [""]
+                }, {
+                    "Index": [2],
+                    "Name": "X--",
+                    "Description": "Scratch X Non-Zero, post-decrement",
+                    "HASM": "",
+                    "Alias": [""]
+                }, {
+                    "Index": [3],
+                    "Name": "!Y",
+                    "Description": "Scratch Y Zero",
+                    "HASM": "",
+                    "Alias": [""]
+                }, {
+                    "Index": [4],
+                    "Name": "Y--",
+                    "Description": "Scratch Y Non-Zero, post-decrement",
+                    "HASM": "",
+                    "Alias": [""]
+                }, {
+                    "Index": [5],
+                    "Name": "X!=Y",
+                    "Description": "Scratch X and Y are not equal",
+                    "HASM": "",
+                    "Alias": [""]
+                }, {
+                    "Index": [6],
+                    "Name": "PIN",
+                    "Description": "Branch on input pin",
+                    "HASM": "",
+                    "Alias": [""]
+                }, {
+                    "Index": [7],
+                    "Name": "!OSRE",
+                    "Description": "Output shift register not empty",
+                    "HASM": "",
+                    "Alias": [""]
+                }
+            ]
+        }, {
+            "Name": "source",
+            "Size": 0,
+            "TableType": "definitions",
+            "Description": "Source Structure",
+            "Entries": [
+                {
+                    "Index": [0],
+                    "Name": "GPIO",
+                    "Size": 0,
+                    "Description": "System GPIO input selected by Index. This is an absolute GPIO index, and is not affected by the state machine’s input IO mapping.",
+                    "HASM": "",
+                    "Alias": [""]
+                }, {
+                    "Index": [1],
+                    "Name": "PIN",
+                    "Size": 0,
+                    "Description": "Input pin selected by Index. This state machine’s input IO mapping is applied first, and then Index selects which of the mapped bits to wait on. In other words, the pin is selected by adding Index to the PINCTRL_IN_BASE configuration, modulo 32.",
+                    "HASM": "",
+                    "Alias": [""]
+                }, {
+                    "Index": [2],
+                    "Name": "IRQ",
+                    "Size": 0,
+                    "Description": "PIO IRQ flag selected by Index",
+                    "HASM": "",
+                    "Alias": [""]
+                }, {
+                    "Index": [3],
+                    "Name": "",
+                    "Size": 0,
+                    "Description": "Reserved",
+                    "HASM": "",
+                    "Alias": [""]
                 }
             ]
         }, {
@@ -171,7 +263,7 @@
                     "HASM": "",
                     "Alias": [""],
                     "Cycles": ["Min", 0,
-                                "Max", 0]
+                               "Max", 0]
                 }
             ]
         }
