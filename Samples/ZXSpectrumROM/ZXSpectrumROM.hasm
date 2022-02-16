@@ -1,19 +1,19 @@
-// ************************************************************************
-// ** An Assembly File Listing to generate a 16K ROM for the ZX Spectrum **
-// ************************************************************************
+/*  ************************************************************************
+    ** An Assembly File Listing to generate a 16K ROM for the ZX Spectrum **
+    ************************************************************************
 
-        // 2022-02-12:
-        // Coded By ChuxMan. First attempt to translate to hasm.
-        //
-        // 03-13-2016:
-        // Add custom NMI handler and a function to enter game pokes after pressing the NMI button
-        //
-        // 11-10-2014:
-        // This version has been updated to correctly handle the NMI jump.
+         2022-02-12:
+         Coded By ChuxMan. First attempt to translate to hasm.
+        
+         03-13-2016:
+         Add custom NMI handler and a function to enter game pokes after pressing the NMI button
+        
+         11-10-2014:
+         This version has been updated to correctly handle the NMI jump.
 
-        // -------------------------
-        // Last updated: 12-FEB-2022
-        // -------------------------
+         -------------------------
+         Last updated: 16-FEB-2022
+         ------------------------- */
 
 // TASM cross-assembler directives.
         // (comment out, perhaps, for other assemblers - see Notes at end.)
@@ -31,105 +31,103 @@
         //   Generally most approaches try to maintain main entry points as they are
         //   often used by third-party software.
 
-// *****************************************
-// ** Part 1. RESTART ROUTINES AND TABLES **
-// *****************************************
+/* *****************************************
+   ** Part 1. RESTART ROUTINES AND TABLES **
+   ***************************************** */
 
-        // -----------
-        // THE 'START'
-        // -----------
-        // At switch on, the Z80 chip is in Interrupt Mode 0.
-        // The Spectrum uses Interrupt Mode 1.
-        // This location can also be 'called' to reset the machine.
-        // Typically with PRINT USR 0.
+/* -----------
+   THE 'START'
+   -----------
+         At switch on, the Z80 chip is in Interrupt Mode 0.
+         The Spectrum uses Interrupt Mode 1.
+         This location can also be 'called' to reset the machine.
+         Typically with PRINT USR 0. */
 
 [0000] Start:  
-        Interrupts = False              // Disable Interrupts.
-        A ^= A                          // Signal coming from START.
-        DE = FFFFh                      // Set pointer to top of possible physical RAM.
-        Go To StartNew                  // Jump forward to common code at START-NEW.
+        Interrupts = False // Disable Interrupts.
+        A ^= A             // Signal coming from START.
+        DE = FFFFh         // Set pointer to top of possible physical RAM.
+        Go To StartNew     // Jump forward to common code at START-NEW.
 
-// -------------------
-// THE 'ERROR' RESTART
-// -------------------
-        // The error pointer is made to point to the position of the error to enable
-        // the editor to highlight the error position if it occurred during syntax
-        // checking.  It is used at 37 places in the program.  An instruction fetch
-        // on address $0008 may page in a peripheral ROM such as the Sinclair
-        // Interface 1 or Disciple Disk Interface.  This was not an original design
-        // concept and not all errors pass through here.
+ /* -------------------
+    THE 'ERROR' RESTART
+    -------------------
+         The error pointer is made to point to the position of the error to enable
+         the editor to highlight the error position if it occurred during syntax
+         checking.  It is used at 37 places in the program.  An instruction fetch
+         on address $0008 may page in a peripheral ROM such as the Sinclair
+         Interface 1 or Disciple Disk Interface.  This was not an original design
+         concept and not all errors pass through here. */
 
 [0008] Error-1:  
-        HL = ($5C5D)            // Fetch the character address from CH_ADD.
-        ($5C5F) = HL            // Copy it to the error pointer X_PTR.
-        Jump To Error-2         // Forward to continue at ERROR-2.
+        HL = ($5C5D)      // Fetch the character address from CH_ADD.
+        ($5C5F) = HL      // Copy it to the error pointer X_PTR.
+        Jump To Error-2   // Forward to continue at ERROR-2.
 
-// -----------------------------
-// THE 'PRINT CHARACTER' RESTART
-// -----------------------------
-        // The A register holds the code of the character that is to be sent to
-        // the output stream of the current channel.  The alternate register set is
-        // used to output a character in the A register so there is no need to
-        // preserve any of the current main registers (HL, DE, BC).
-        // This restart is used 21 times.
+/* -----------------------------
+   THE 'PRINT CHARACTER' RESTART
+   -----------------------------
+         The A register holds the code of the character that is to be sent to
+         the output stream of the current channel.  The alternate register set is
+         used to output a character in the A register so there is no need to
+         preserve any of the current main registers (HL, DE, BC).
+         This restart is used 21 times. */
 
 [0010] PrintChar:  
-        Go To PrintChar2           // Jump forward to continue at PRINT-A-2.
+        Go To PrintChar2  // Jump forward to continue at PRINT-A-2.
 
 [0013] <data>
         Byte FFh, FFh, FFh   // Five unused locations.
         Byte FFh, FFh        //
         </data>
 
-// -------------------------------
-// THE 'COLLECT CHARACTER' RESTART
-// -------------------------------
-        // The contents of the location currently addressed by CH_ADD are fetched.
-        // A return is made if the value represents a character that has
-        // relevance to the BASIC parser. Otherwise CH_ADD is incremented and the
-        // tests repeated. CH_ADD will be addressing somewhere -
-        // 1) in the BASIC program area during line execution.
-        // 2) in workspace if evaluating, for example, a string expression.
-        // 3) in the edit buffer if parsing a direct command or a new BASIC line.
-        // 4) in workspace if accepting input but not that from INPUT LINE.
+ /* -------------------------------
+    THE 'COLLECT CHARACTER' RESTART
+    -------------------------------
+         The contents of the location currently addressed by CH_ADD are fetched.
+         A return is made if the value represents a character that has
+         relevance to the BASIC parser. Otherwise CH_ADD is incremented and the
+         tests repeated. CH_ADD will be addressing somewhere -
+         1) in the BASIC program area during line execution.
+         2) in workspace if evaluating, for example, a string expression.
+         3) in the edit buffer if parsing a direct command or a new BASIC line.
+         4) in workspace if accepting input but not that from INPUT LINE. */
 
 [0018] GetChar:  
         HL = ($5C5D)      // fetch the address from CH_ADD.
         A = (HL)          // use it to pick up current character.
 
 [001C] TestChar:  
-        Call L007D           // routine SKIP-OVER tests if the character is relevant.
-        If !Carry Return     // Return if it is significant.
+        Call L007D        // routine SKIP-OVER tests if the character is relevant.
+        If !Carry Return  // Return if it is significant.
 
-// ------------------------------------
-// THE 'COLLECT NEXT CHARACTER' RESTART
-// ------------------------------------
-//   As the BASIC commands and expressions are interpreted, this routine is
-//   called repeatedly to step along the line.  It is used 83 times.
+/* ------------------------------------
+   THE 'COLLECT NEXT CHARACTER' RESTART
+   ------------------------------------
+         As the BASIC commands and expressions are interpreted, this routine is
+         called repeatedly to step along the line.  It is used 83 times. */
 
 // NEXT-CHAR
 [0020] NextChar:  
-        Call L0074              // routine CH-ADD+1 fetches the next immediate
-                                // character.
-        Jump To TestChar        // jump back to TEST-CHAR until a valid
-                                // character is found.
+        Call L0074        // routine CH-ADD+1 fetches the next immediate character.
+        Jump To TestChar  // jump back to TEST-CHAR until a valid character is found.
 
 // ---
 [0025] <data>
-        Byte FFh, FFh, FFh      // unused
+        Byte FFh, FFh, FFh // unused
         </data>
 
-// -----------------------
-// THE 'CALCULATE' RESTART
-// -----------------------
-        // This restart enters the Spectrum's internal, floating-point, stack-based,
-        // FORTH-like language.
-        // It is further used recursively from within the calculator.
-        // It is used on 77 occasions.
+/* -----------------------
+   THE 'CALCULATE' RESTART
+   -----------------------
+         This restart enters the Spectrum's internal, floating-point, stack-based,
+         FORTH-like language.
+         It is further used recursively from within the calculator.
+         It is used on 77 occasions. */
 
 // FP-CALC
 [0028] FPCalc:  
-        Go To L335B           // jump forward to the CALCULATE routine.
+        Go To L335B       // jump forward to the CALCULATE routine.
 
 // ---
 [002B] <data>
@@ -138,61 +136,62 @@
                              // used for the five-byte end-calc literal.
         </data>
 
-// ------------------------------
-// THE 'CREATE BC SPACES' RESTART
-// ------------------------------
-        // This restart is used on only 12 occasions to create BC spaces
-        // between workspace and the calculator stack.
+ /* ------------------------------
+    THE 'CREATE BC SPACES' RESTART
+    ------------------------------
+         This restart is used on only 12 occasions to create BC spaces
+         between workspace and the calculator stack. */
 
 // BC-SPACES
-L0030:  Push BC              // Save number of spaces.
-        HL = ($5C61)      // Fetch WORKSP.
-        Push HL              // Save address of workspace.
-        Go To L169E           // Jump forward to continuation code RESERVE.
+[0030] BCSpaces:  
+        Push BC        // Save number of spaces.
+        HL = ($5C61)   // Fetch WORKSP.
+        Push HL        // Save address of workspace.
+        Go To L169E    // Jump forward to continuation code RESERVE.
 
-// --------------------------------
-// THE 'MASKABLE INTERRUPT' ROUTINE
-// --------------------------------
-//   This routine increments the Spectrum's three-byte FRAMES counter fifty
-//   times a second (sixty times a second in the USA ).
-//   Both this routine and the called KEYBOARD subroutine use the IY register
-//   to access system variables and flags so a user-written program must
-//   disable interrupts to make use of the IY register.
+/* --------------------------------
+   THE 'MASKABLE INTERRUPT' ROUTINE
+   --------------------------------
+         This routine increments the Spectrum's three-byte FRAMES counter fifty
+         times a second (sixty times a second in the USA ).
+         Both this routine and the called KEYBOARD subroutine use the IY register
+         to access system variables and flags so a user-written program must
+         disable interrupts to make use of the IY register. */
 
 [0038] MaskINT:  
-        Push AF                         // Save the registers that will be used but not
-        Push HL                         // the IY register unfortunately.
-        HL = ($5C78)                    // Fetch the first two bytes at FRAMES1.
-        HL++                            // Increment lowest two bytes of counter.
-        ($5C78) = HL                    // Place back in FRAMES1.
-        A = H                           // Test if the result was zero.
-        A |= L                          //
-        If !Zero Jump To KeyINT          // Forward, if not, to KEY-INT
-        (IY + $40)++                    // otherwise increment FRAMES3 the third byte.
+        Push AF                 // Save the registers that will be used but not
+        Push HL                 // the IY register unfortunately.
+        HL = ($5C78)            // Fetch the first two bytes at FRAMES1.
+        HL++                    // Increment lowest two bytes of counter.
+        ($5C78) = HL            // Place back in FRAMES1.
+        A = H                   // Test if the result was zero.
+        A |= L
+        If !Zero Jump To KeyINT // Forward, if not, to KEY-INT
+        (IY + $40)++            // otherwise increment FRAMES3 the third byte.
 
-//   Now save the rest of the main registers and read and decode the keyboard.
+// Now save the rest of the main registers and read and decode the keyboard.
 
 [0048] KeyINT:  
         Push BC                 // Save the other main registers.
-        Push DE                 //
+        Push DE
 
         Call Keyboard           // Routine KEYBOARD executes a stage in the
                                 // process of reading a key-press.
-        Pull DE                 //
+        Pull DE
         Pull BC                 // Restore registers.
 
-        Pull HL                 //
-        Pull AF                 //
+        Pull HL
+        Pull AF
 
         Interrupts = True       // Enable Interrupts.
         Return                  // Return.
 
-// ---------------------
-// THE 'ERROR-2' ROUTINE
-// ---------------------
-        // A continuation of the code at 0008.
-        // The error code is stored and after clearing down stacks, an indirect jump
-        // is made to MAIN-4, etc. to handle the error.
+/* ---------------------
+   THE 'ERROR-2' ROUTINE
+   ---------------------
+         A continuation of the code at 0008.
+         The error code is stored and after clearing down stacks, an indirect jump
+         is made to MAIN-4, etc. to handle the error. */
 
 [0053] Error-2:  
         Pull HL                 // drop the return address - the location
@@ -220,41 +219,42 @@ L0030:  Push BC              // Save number of spaces.
                                 // variables area and then indirectly to MAIN-4,
                                 // etc.
 
-<data>
-        Byte FFh, FFh, FFh   // Unused locations
-        Byte FFh, FFh, FFh   // before the fixed-position
-        Byte FFh             // NMI routine.
+[005F] <data>
+        Byte FFh, FFh, FFh      // Unused locations
+        Byte FFh, FFh, FFh      // before the fixed-position
+        Byte FFh                // NMI routine.
         </data>
 
-// ------------------------------------
-// THE 'NON-MASKABLE INTERRUPT' ROUTINE
-// ------------------------------------
-        // There is no NMI switch on the standard Spectrum or its peripherals.
-        // When the NMI line is held low, then no matter what the Z80 was doing at
-        // the time, it will now execute the code at 66 Hex.
-        // This Interrupt Service Routine will jump to location zero if the contents
-        // of the system variable NMIADD are zero or return if the location holds a
-        // non-zero address.   So attaching a simple switch to the NMI as in the book
-        // "Spectrum Hardware Manual" causes a reset.  The logic was obviously
-        // intended to work the other way.  Sinclair Research said that, since they
-        // had never advertised the NMI, they had no plans to fix the error "until
-        // the opportunity arose".
-        //
-        // Note. The location NMIADD was, in fact, later used by Sinclair Research
-        // to enhance the text channel on the ZX Interface 1.
-        // On later Amstrad-made Spectrums, and the Brazilian Spectrum, the logic of
-        // this routine was indeed reversed but not as at first intended.
-        //
-        // It can be deduced by looking elsewhere in this ROM that the NMIADD system
-        // variable pointed to L121C and that this enabled a Warm Restart to be
-        // performed at any time, even while playing machine code games, or while
-        / another Spectrum has been allowed to gain control of this one.
-        //
-        // Software houses would have been able to protect their games from attack by
-        // placing two zeros in the NMIADD system variable.
+/* ------------------------------------
+   THE 'NON-MASKABLE INTERRUPT' ROUTINE
+   ------------------------------------
+         There is no NMI switch on the standard Spectrum or its peripherals.
+         When the NMI line is held low, then no matter what the Z80 was doing at
+         the time, it will now execute the code at 66 Hex.
+         This Interrupt Service Routine will jump to location zero if the contents
+         of the system variable NMIADD are zero or return if the location holds a
+         non-zero address.   So attaching a simple switch to the NMI as in the book
+         "Spectrum Hardware Manual" causes a reset.  The logic was obviously
+         intended to work the other way.  Sinclair Research said that, since they
+         had never advertised the NMI, they had no plans to fix the error "until
+         the opportunity arose".
+        
+         Note. The location NMIADD was, in fact, later used by Sinclair Research
+         to enhance the text channel on the ZX Interface 1.
+         On later Amstrad-made Spectrums, and the Brazilian Spectrum, the logic of
+         this routine was indeed reversed but not as at first intended.
+        
+         It can be deduced by looking elsewhere in this ROM that the NMIADD system
+         variable pointed to L121C and that this enabled a Warm Restart to be
+         performed at any time, even while playing machine code games, or while
+         another Spectrum has been allowed to gain control of this one.
+        
+         Software houses would have been able to protect their games from attack by
+         placing two zeros in the NMIADD system variable. */
 
 // RESET
-L0066:  Push AF              // save the
+[0066] L0066:  
+        Push AF              // save the
         Push HL              // registers.
 //       HL = ($5CB0)      // fetch the system variable NMIADD.
         HL = nmi_handler  // Custom NMI handler
@@ -267,7 +267,7 @@ L0066:  Push AF              // save the
         Go To (HL)            // jump to routine ( i.e. Start )
 
 // NO-RESET
-L0070:  Pull HL              // restore the
+[0070] L0070:  Pull HL              // restore the
         Pull AF              // registers.
         RETN                    // return to previous interrupt state.
 
@@ -281,35 +281,35 @@ L0070:  Pull HL              // restore the
 //   Both TEMP-PTR1 and TEMP-PTR2 are used by the READ command routine.
 
 // CH-ADD+1
-L0074:  HL = ($5C5D)      // fetch address from CH_ADD.
+[0074] L0074:  HL = ($5C5D)      // fetch address from CH_ADD.
 
 // TEMP-PTR1
-L0077:  HL++              // increase the character address by one.
+[0077] L0077:  HL++              // increase the character address by one.
 
 // TEMP-PTR2
-L0078:  LD      ($5C5D),HL      // update CH_ADD with character address.
+[0078] L0078:  LD      ($5C5D),HL      // update CH_ADD with character address.
 
-X007B:  A = (HL)          // load character to A from HL.
+[007B] X007B:  A = (HL)          // load character to A from HL.
         Return                // and return.
 
-// --------------------------
-// THE 'SKIP OVER' SUBROUTINE
-// --------------------------
-//   This subroutine is called once from RST 18 to skip over white-space and
-//   other characters irrelevant to the parsing of a BASIC line etc. .
-//   Initially the A register holds the character to be considered
-//   and HL holds its address which will not be within quoted text
-//   when a BASIC line is parsed.
-//   Although the 'tab' and 'at' characters will not appear in a BASIC line,
-//   they could be present in a string expression, and in other situations.
-//   Note. although white-space is usually placed in a program to indent loops
-//   and make it more readable, it can also be used for the opposite effect and
-//   spaces may appear in variable names although the parser never sees them.
-//   It is this routine that helps make the variables 'Anum bEr5 3BUS' and
-//   'a number 53 bus' appear the same to the parser.
+/* --------------------------
+   THE 'SKIP OVER' SUBROUTINE
+   --------------------------
+         This subroutine is called once from RST 18 to skip over white-space and
+         other characters irrelevant to the parsing of a BASIC line etc. .
+         Initially the A register holds the character to be considered
+         and HL holds its address which will not be within quoted text
+         when a BASIC line is parsed.
+         Although the 'tab' and 'at' characters will not appear in a BASIC line,
+         they could be present in a string expression, and in other situations.
+         Note. although white-space is usually placed in a program to indent loops
+         and make it more readable, it can also be used for the opposite effect and
+         spaces may appear in variable names although the parser never sees them.
+         It is this routine that helps make the variables 'Anum bEr5 3BUS' and
+         'a number 53 bus' appear the same to the parser. */
 
 // SKIP-OVER
-L007D:  CP      $21             // test if higher than space.
+[007D] L007D:  CP      $21             // test if higher than space.
         If !Carry Return              // return with carry clear if so.
 
         CP      $0D             // carriage return ?
