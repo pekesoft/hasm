@@ -76,9 +76,9 @@
 [0010] PrintChar:  
         Go To PrintChar2           // Jump forward to continue at PRINT-A-2.
 
-<data>
-        Byte $FF, $FF, $FF   // Five unused locations.
-        Byte $FF, $FF        //
+[0013] <data>
+        Byte FFh, FFh, FFh   // Five unused locations.
+        Byte FFh, FFh        //
         </data>
 
 // -------------------------------
@@ -108,37 +108,41 @@
 //   called repeatedly to step along the line.  It is used 83 times.
 
 // NEXT-CHAR
-[0020] NextChar:  Call L0074           // routine CH-ADD+1 fetches the next immediate
+[0020] NextChar:  
+        Call L0074              // routine CH-ADD+1 fetches the next immediate
                                 // character.
-        Jump To TestChar           // jump back to TEST-CHAR until a valid
+        Jump To TestChar        // jump back to TEST-CHAR until a valid
                                 // character is found.
 
 // ---
-
-        Byte $FF, $FF, $FF   // unused
+[0025] <data>
+        Byte FFh, FFh, FFh      // unused
+        </data>
 
 // -----------------------
 // THE 'CALCULATE' RESTART
 // -----------------------
-//   This restart enters the Spectrum's internal, floating-point, stack-based,
-//   FORTH-like language.
-//   It is further used recursively from within the calculator.
-//   It is used on 77 occasions.
+        // This restart enters the Spectrum's internal, floating-point, stack-based,
+        // FORTH-like language.
+        // It is further used recursively from within the calculator.
+        // It is used on 77 occasions.
 
 // FP-CALC
-L0028:  Go To L335B           // jump forward to the CALCULATE routine.
+[0028] FPCalc:  
+        Go To L335B           // jump forward to the CALCULATE routine.
 
 // ---
-
-        Byte $FF, $FF, $FF   // spare - note that on the ZX81, space being a
-        Byte $FF, $FF        // little cramped, these same locations were
-                                // used for the five-byte end-calc literal.
+[002B] <data>
+        Byte FFh, FFh, FFh   // spare - note that on the ZX81, space being a
+        Byte FFh, FFh        // little cramped, these same locations were
+                             // used for the five-byte end-calc literal.
+        </data>
 
 // ------------------------------
 // THE 'CREATE BC SPACES' RESTART
 // ------------------------------
-//   This restart is used on only 12 occasions to create BC spaces
-//   between workspace and the calculator stack.
+        // This restart is used on only 12 occasions to create BC spaces
+        // between workspace and the calculator stack.
 
 // BC-SPACES
 L0030:  Push BC              // Save number of spaces.
@@ -217,9 +221,9 @@ L0030:  Push BC              // Save number of spaces.
                                 // etc.
 
 <data>
-        Byte $FF, $FF, $FF   // Unused locations
-        Byte $FF, $FF, $FF   // before the fixed-position
-        Byte $FF             // NMI routine.
+        Byte FFh, FFh, FFh   // Unused locations
+        Byte FFh, FFh, FFh   // before the fixed-position
+        Byte FFh             // NMI routine.
         </data>
 
 // ------------------------------------
@@ -670,7 +674,7 @@ L0284:  Byte $D0             // FORMAT
 L028E:  L = $2F           // initial key value
                                 // valid values are obtained by subtracting
                                 // eight five times.
-        DE = $FFFF        // a buffer to receive 2 keys.
+        DE = FFhFF        // a buffer to receive 2 keys.
 
         BC = $FEFE        // the commencing port address
                                 // B holds 11111110 initially and is also
@@ -751,7 +755,7 @@ L02AB:  L--              // cycles 2F>2E>2D>2C>2B>2A>29>28 for
         HL = $5C00        // point to KSTATE-0
 
 // K-ST-LOOP
-L02C6:  Zero = HL[7]          // is it free ?  (i.e. $FF)
+L02C6:  Zero = HL[7]          // is it free ?  (i.e. FFh)
         If !Zero Jump To L02D1        // forward to K-CH-SET if so
 
         HL++              // address the 5-counter
@@ -760,7 +764,7 @@ L02C6:  Zero = HL[7]          // is it free ?  (i.e. $FF)
 
         If !Zero Jump To L02D1        // forward to K-CH-SET if not at end of count
 
-        (HL) = $FF        // else mark this particular map free.
+        (HL) = FFh        // else mark this particular map free.
 
 // K-CH-SET
 L02D1:  A = L             // make a copy of the low address byte.
@@ -863,7 +867,7 @@ L0310:  HL++              // increment the map pointer to second location.
 
 // K-TEST
 L031E:  B = D             // load most significant key to B
-                                // will be $FF if not shift.
+                                // will be FFh if not shift.
         D = $00           // and reset D to index into main table
         A = E             // load least significant key from E
         CP      $27             // is it higher than 39d   i.e. FF
@@ -874,7 +878,7 @@ L031E:  B = D             // load most significant key to B
 
 //   but we could have just symbol shift and no other
 
-        Zero = B[7]             // is other key $FF (ie not shift)
+        Zero = B[7]             // is other key FFh (ie not shift)
         If !Zero Return              // return with solitary symbol shift
 
 
@@ -1063,7 +1067,7 @@ L03B2:  A = $40           // substitute ASCII '@'
 
 // ------------------------------------------------------------------------
 //   The Spectrum Input character keys. One or two are abbreviated.
-//   From $00 Flash 0 to $FF COPY. The routine above has decoded all these.
+//   From $00 Flash 0 to FFh COPY. The routine above has decoded all these.
 
 //  | 00 Fl0| 01 Fl1| 02 Br0| 03 Br1| 04 In0| 05 In1| 06 CAP| 07 EDT|
 //  | 08 LFT| 09 RIG| 0A DWN| 0B UP | 0C DEL| 0D ENT| 0E SYM| 0F GRA|
@@ -1368,8 +1372,8 @@ L046C:  RST     08H             // ERROR-1
         Byte $89, $1B, $90, $41, $02    //  311.126983881         D#
         Byte $89, $24, $D0, $53, $CA    //  329.627557039         E
         Byte $89, $2E, $9D, $36, $B1    //  349.228231549         F
-        Byte $89, $38, $FF, $49, $3E    //  369.994422674         F#
-        Byte $89, $43, $FF, $6A, $73    //  391.995436072         G
+        Byte $89, $38, FFh, $49, $3E    //  369.994422674         F#
+        Byte $89, $43, FFh, $6A, $73    //  391.995436072         G
         Byte $89, $4F, $A7, $00, $54    //  415.304697513         G#
         Byte $89, $5C, $00, $00, $00    //  440.000000000         A
         Byte $89, $69, $14, $F6, $24    //  466.163761616         A#
@@ -1439,7 +1443,7 @@ L04AA:  Call L24FB           // routine SCANNING to evaluate expression.
 //   On entry -
 //   HL points to start of data.
 //   IX points to descriptor.
-//   The accumulator is set to  $00 for a header, $FF for data.
+//   The accumulator is set to  $00 for a header, FFh for data.
 
 // SA-BYTES
 L04C2:  HL = L053F        // address: SA/LD-RET
@@ -1489,7 +1493,7 @@ L04D8:  DJNZ    L04D8           // self loop to SA-LEADER for delay.
 
         B--              // decrement count
         H--              // originally  twelve or thirty-one.
-        Go To P,L04D8         // back to SA-LEADER until H becomes $FF
+        Go To P,L04D8         // back to SA-LEADER until H becomes FFh
 
 //   now send a sync pulse. At this stage mic is off and A holds value
 //   for mic on.
@@ -1516,14 +1520,14 @@ L04F2:  DJNZ    L04F2           // self loop to SA-SYNC-2
                                 // which is 1st byte to be saved.
 
         L = A             // and transfer to L.
-                                // the initial parity is A, $FF or $00.
+                                // the initial parity is A, FFh or $00.
         Go To L0507           // JUMP forward to SA-START     ->
                                 // the mid entry point of loop.
 
 // -------------------------
 //   During the save loop a parity byte is maintained in H.
 //   the save loop begins by testing if reduced length is zero and if so
-//   the final parity byte is saved reducing count to $FFFF.
+//   the final parity byte is saved reducing count to FFhFF.
 
 // SA-LOOP
 L04FE:  A = D             // fetch high byte
@@ -1612,7 +1616,7 @@ L0525:  RL      L               // rotate left through carry
         RRA                     // if a space is pressed
         If !Carry Return              // return to SA/LD-RET.   - - >
 
-//   now test if byte counter has reached $FFFF.
+//   now test if byte counter has reached FFhFF.
 
         A = D             // fetch high byte
         A++               // increment.
@@ -1667,7 +1671,7 @@ L0554:  Pull AF              // restore the accumulator.
 // Load header or block of information
 // ------------------------------------
 //   This routine is used to load bytes and on entry A is set to $00 for a
-//   header or to $FF for data.  IX points to the start of receiving location
+//   header or to FFh for data.  IX points to the start of receiving location
 //   and DE holds the length of bytes to be loaded. If, on entry the carry flag
 //   is set then data is loaded, if reset then it is verified.
 
@@ -1751,7 +1755,7 @@ L058F:  B = $C9           // initial timing value in B.
                                 // a normal lead-in edge gap.
 
 //   but a short gap will be the sync pulse.
-//   in which case another edge should appear before B rises to $FF
+//   in which case another edge should appear before B rises to FFh
 
         Call L05E7           // routine LD-EDGE-1
         If !Carry Return              // return with time-out.
@@ -1894,7 +1898,7 @@ L05E9:  A--               // decrement counter
 
 // LD-SAMPLE
 L05ED:  B++              // increment the time-out counter.
-        If Zero Return               // return with failure when $FF passed.
+        If Zero Return               // return with failure when FFh passed.
 
         A = $7F           // prepare to read keyboard and EAR port
         (FEh) --> A         // row $7FFE. bit 6 is EAR, bit 0 is SPACE key.
@@ -1977,17 +1981,17 @@ L0629:  (DE) = A          // set workspace location to space.
         DE++              // next location.
         DJNZ    L0629           // loop back to SA-BLANK till all eleven done.
 
-        LD      (IX+$01),$FF    // set first byte of ten character filename
-                                // to $FF as a default to signal null string.
+        LD      (IX+$01),FFh    // set first byte of ten character filename
+                                // to FFh as a default to signal null string.
 
         Call L2BF1           // routine STK-FETCH fetches the filename
                                 // parameters from the calculator stack.
                                 // length of string in BC.
                                 // start of string in DE.
 
-        HL = $FFF6        // prepare the value minus ten.
+        HL = FFhF6        // prepare the value minus ten.
         BC--              // decrement length.
-                                // ten becomes nine, zero becomes $FFFF.
+                                // ten becomes nine, zero becomes FFhFF.
         HL += BC           // trial addition.
         BC++              // restore true length.
         If !Carry Jump To L064B)        // forward to SA-NAME if length is one to ten.
@@ -2335,7 +2339,7 @@ L078A:  CP      $04             // check if type in acceptable range 0 - 3.
 
         Push IX              // transfer IX,
         Pull DE              // the 2nd descriptor, to DE.
-        HL = $FFF0        // prepare minus seventeen.
+        HL = FFhF0        // prepare minus seventeen.
         HL += DE           // add to point HL to 1st descriptor.
         B = $0A           // the count will be ten characters for the
                                 // filename.
@@ -2454,13 +2458,13 @@ L07F4:  Push HL              // Push  pointer to start of data block.
                                 // data is not loaded.
 
 // VR-CONT-3
-L0800:  A = $FF           // signal data block to be loaded
+L0800:  A = FFh           // signal data block to be loaded
 
 // -----------------
 // Load a data block
 // -----------------
 //   This routine is called from 3 places other than above to load a data block.
-//   In all cases the accumulator is first set to $FF so the routine could be
+//   In all cases the accumulator is first set to FFh so the routine could be
 //   called at the previous instruction.
 
 // LD-BLOCK
@@ -2565,7 +2569,7 @@ L084C:  HL = ($5C59)      // address E_LINE
         Push HL              // transfer address
         Pull IX              // to IX register pair.
         Carry = True                     // set carry flag indicating load not verify.
-        A = $FF           // signal data not header.
+        A = FFh           // signal data not header.
         Go To L0802           // JUMP back to LD-BLOCK
 
 // -----------------
@@ -2609,7 +2613,7 @@ L0873:  DE <--> HL           // transfer dest to DE.
 L08AD:  Pull DE              // ** pop the length
         Pull IX              // * and start.
         Carry = True                     // set carry flag
-        A = $FF           // signal data as opposed to a header.
+        A = FFh           // signal data as opposed to a header.
         Go To L0802           // jump back to LD-BLOCK
 
 // ---------------------------
@@ -2634,7 +2638,7 @@ L08B6:  C = (IX+$0B)      // fetch length
         Push HL              // and transfer it
         Pull IX              // to IX register.
         Carry = True                     // set carry flag to load data on tape.
-        A = $FF           // signal data not a header.
+        A = FFh           // signal data not a header.
         Call L0802           // routine LD-BLOCK loads to workspace.
         Pull HL              // restore first location in workspace to HL.
 X08CE   DE = ($5C53)      // set DE from system variable PROG.
@@ -2753,7 +2757,7 @@ L091E:  Pull HL              // restore the prog/vars pointer.
 //   branch here when variable is to replace an existing one
 
 // ME-VAR-L1
-L0921:  A = $FF           // indicate a replacement.
+L0921:  A = FFh           // indicate a replacement.
 
 //   this entry point is when A holds $80 indicating a new variable.
 
@@ -2876,7 +2880,7 @@ L0991:  HALT                    // wait for interrupt
         E = (IX+$0B)      // fetch length of bytes from the
         D = (IX+$0C)      // descriptor.
 
-        A = $FF           // signal data bytes.
+        A = FFh           // signal data bytes.
 
         Pull IX              // retrieve pointer to start
         Go To L04C2           // jump back to SA-BYTES
@@ -2890,7 +2894,7 @@ L0991:  HALT                    // wait for interrupt
 //   HEADER  HEADER             num   chr          NOTES.
 //   ------  ------      ----   ----  ----  ----   -----------------------------
 //   IX-$11  IX+$00      0      1     2     3      Type.
-//   IX-$10  IX+$01      x      x     x     x      F  ($FF if filename is null).
+//   IX-$10  IX+$01      x      x     x     x      F  (FFh if filename is null).
 //   IX-$0F  IX+$02      x      x     x     x      i
 //   IX-$0E  IX+$03      x      x     x     x      l
 //   IX-$0D  IX+$04      x      x     x     x      e
@@ -3087,7 +3091,7 @@ L0A5F:  Call L0B03           // routine PO-FETCH - seems unnecessary.
 
         A = C             // the column position. $21-$01
         A--               // move right. $20-$00
-        A--               // and again   $1F-$00 or $FF if trailing
+        A--               // and again   $1F-$00 or FFh if trailing
         A &= $10             // will be $00 or $10.
         Jump To L0AC3           // forward to PO-FILL
 
@@ -3350,11 +3354,11 @@ L0B38:  HL = $5C92        // address MEM-0 - a temporary buffer in
 
 // PO-GR-2
 L0B3E:  RR      B               // rotate bit 0/2 to carry
-        SBC     A,A             // result $00 or $FF
+        SBC     A,A             // result $00 or FFh
         A &= $0F             // mask off right hand side
         C = A             // store part in C
         RR      B               // rotate bit 1/3 of original chr to carry
-        SBC     A,A             // result $00 or $FF
+        SBC     A,A             // result $00 or FFh
         A &= $F0             // mask off left hand side
         A |= C               // combine with stored pattern
         C = $04           // four bytes for top/bottom half
@@ -3452,7 +3456,7 @@ L0B93:  CP      C               // this test is really for screen - new line ?
         Push BC              // save line/column
         Push HL              // and destination
         A = ($5C91)       // fetch P_FLAG to accumulator
-        B = $FF           // prepare OVER mask in B.
+        B = FFh           // prepare OVER mask in B.
         RRA                     // bit 0 set if OVER 1
         If Carry Jump To L0BA4         // to PR-ALL-2
 
@@ -4147,7 +4151,7 @@ L0E0D:  DE <--> HL           // copy HL to DE.
 
 // CL-SCR-3
 L0E19:  DE <--> HL           // save source in DE.
-        HL = $FFE0        // load the value -32.
+        HL = FFhE0        // load the value -32.
         HL += DE           // add to form destination in HL.
         DE <--> HL           // switch source and destination
         B = A             // save the count in B.
@@ -4174,7 +4178,7 @@ L0E19:  DE <--> HL           // save source in DE.
         Call L0E88           // routine CL-ATTR gets address in attributes
                                 // from current 'ninth line', count in BC.
 
-        HL = $FFE0        // set HL to the 16-bit value -32.
+        HL = FFhE0        // set HL to the 16-bit value -32.
         HL += DE           // and add to form destination address.
         DE <--> HL           // swap source and destination addresses.
         LDIR                    // copy bytes scrolling the linear attributes.
@@ -4430,7 +4434,7 @@ L0EE7:  (HL) = A          // set addressed location to zero.
 // COPY-LINE
 L0EF4:  A = B             // fetch the counter 1-8 or 1-176
         CP      $03             // is it 01 or 02 ?.
-        SBC     A,A             // result is $FF if so else $00.
+        SBC     A,A             // result is FFh if so else $00.
         A &= $02             // result is 02 now else 00.
                                 // bit 1 set slows the printer.
         ($FB) <-- A         // slow the printer for the
@@ -4679,7 +4683,7 @@ L0FA9:  HL = ($5C49)      // fetch E_PPC the last line number entered.
         (SP) <--> HL         // swap with line address on stack
         Push HL              // save line address underneath
 
-        A = $FF           // select system channel 'R'
+        A = FFh           // select system channel 'R'
         Call L1601           // routine CHAN-OPEN opens it
 
         Pull HL              // drop line address
@@ -4796,7 +4800,7 @@ L1024:  Pull HL              // discard address ED-LOOP
 // ED-END
 L1026:  Pull HL              // the previous value of ERR_SP
         LD      ($5C3D),HL      // is restored to ERR_SP system variable
-        Zero = 7,(IY+$00)      // is ERR_NR $FF (= 'OK') ?
+        Zero = 7,(IY+$00)      // is ERR_NR FFh (= 'OK') ?
         If !Zero Return              // return if so
 
         SP = HL           // else put error routine on stack
@@ -4942,7 +4946,7 @@ L107F:  Zero = 4,(IY+$30)      // test FLAGS2  - is K channel in use ?
 // but as long as we're editing lines or inputting from the keyboard, then
 // we've run out of memory so give a short rasp.
 
-        LD      (IY+$00),$FF    // reset ERR_NR to 'OK'.
+        LD      (IY+$00),FFh    // reset ERR_NR to 'OK'.
         D = $00           // prepare for beeper.
         E = (IY-$02)      // use RASP value.
         HL = $1A90        // set the pitch - or tone period.
@@ -5196,7 +5200,7 @@ L1167:  D = $00           // prepare to moan.
 
         Call L03B5           // routine BEEPER.
 
-        LD      (IY+$00),$FF    // clear ERR_NR.
+        LD      (IY+$00),FFh    // clear ERR_NR.
         DE = ($5C8A)      // fetch SPOSNL.
         Jump To L117E           // forward to ED-C-END
 
@@ -5326,7 +5330,7 @@ L11A7:  A = (HL)          // fetch character
 // NEW
 L11B7:  Interrupts = False              // Disable Interrupts - machine stack will be
                                 // cleared.
-        A = $FF           // Flag coming from NEW.
+        A = FFh           // Flag coming from NEW.
         DE = ($5CB2)      // Fetch RAMTOP as top value.
         * <--> *                     // Switch in alternate set.
         BC = ($5CB4)      // Fetch P-RAMT differs on 16K/48K machines.
@@ -5368,7 +5372,7 @@ L11B7:  Interrupts = False              // Disable Interrupts - machine stack wi
 // -----------------------
 //   Typically, a Spectrum will have 16K or 48K of RAM and this code will test
 //   it all till it finds an unpopulated location or, less likely, a faulty
-//   location.  Usually it stops when it reaches the top $FFFF, or in the case
+//   location.  Usually it stops when it reaches the top FFhFF, or in the case
 //   of NEW the supplied top value.  The entire screen turns black with
 //   sometimes red stripes on black paper just visible.
 
@@ -5512,8 +5516,8 @@ L121C:
         HL = $0523        // The keyboard repeat and delay values are
         LD      ($5C09),HL      // loaded to REPDEL and REPPER.
 
-        DEC     (IY-$3A)        // set KSTATE-0 to $FF - keyboard map available.
-        DEC     (IY-$36)        // set KSTATE-4 to $FF - keyboard map available.
+        DEC     (IY-$3A)        // set KSTATE-0 to FFh - keyboard map available.
+        DEC     (IY-$36)        // set KSTATE-4 to FFh - keyboard map available.
 
         HL = L15C6        // set source to ROM Address: init-strm
         DE = $5C10        // set destination to system variable STRMS-FD
@@ -5567,7 +5571,7 @@ L12AC:  A = $00           // select channel 'K' the keyboard
 
         Call L1B17           // routine LINE-SCAN scans the input.
 
-        Zero = 7,(IY+$00)      // test ERR_NR - will be $FF if syntax is OK.
+        Zero = 7,(IY+$00)      // test ERR_NR - will be FFh if syntax is OK.
         If !Zero Jump To L12CF        // forward, if correct, to MAIN-3.
 
 //
@@ -5580,7 +5584,7 @@ L12AC:  A = $00           // select channel 'K' the keyboard
         HL = ($5C59)      // an editing error so address E_LINE.
         Call L11A7           // routine REMOVE-FP removes the hidden
                                 // floating-point forms.
-        LD      (IY+$00),$FF    // system variable ERR_NR is reset to 'OK'.
+        LD      (IY+$00),FFh    // system variable ERR_NR is reset to 'OK'.
         Jump To L12AC           // back to MAIN-2 to allow user to correct.
 
 // ---
@@ -5625,7 +5629,7 @@ L12CF:  HL = ($5C59)      // fetch the edit line address from E_LINE.
         A -= (IY+$4F)        // value of S_POSN_hi.
         LD      ($5C8C),A       // update SCR_CT system variable.
         SET     7,(IY+$01)      // update FLAGS - signal running program.
-        LD      (IY+$00),$FF    // set ERR_NR to 'OK'.
+        LD      (IY+$00),FFh    // set ERR_NR to 'OK'.
         LD      (IY+$0A),$01    // set NSPPC to one for first statement.
         Call L1B8A           // call routine LINE-RUN to run the line.
                                 // sysvar ERR_SP therefore addresses MAIN-4
@@ -5712,7 +5716,7 @@ X1349:  A ^= A               // clear accumulator to directly
                                 // probably contained 'RUN'.
 
         A = ($5C3A)       // fetch ERR_NR again
-        A++               // test for no error originally $FF.
+        A++               // test for no error originally FFh.
         If Zero Jump To L1386         // forward to MAIN-9 if no error.
 
         CP      $09             // is code Report 9 STOP ?
@@ -5745,7 +5749,7 @@ L1384:  LDDR                    // copy PPC to OLDPPC and SUBPPC to OSPCC
                                 // or NSPPC to OLDPPC and NEWPPC to OSPCC
 
 // MAIN-9
-L1386:  LD      (IY+$0A),$FF    // update NSPPC - signal 'no jump'.
+L1386:  LD      (IY+$0A),FFh    // update NSPPC - signal 'no jump'.
         RES     3,(IY+$01)      // update FLAGS - signal use 'K' mode for
                                 // the first character in the editor and
 
@@ -5941,7 +5945,7 @@ L15C4:  RST     08H             // ERROR-1
 // init-strm
 L15C6:  Byte $01, $00        // stream $FD offset to channel 'K'
         Byte $06, $00        // stream $FE offset to channel 'S'
-        Byte $0B, $00        // stream $FF offset to channel 'R'
+        Byte $0B, $00        // stream FFh offset to channel 'R'
 
         Byte $01, $00        // stream $00 offset to channel 'K'
         Byte $01, $00        // stream $01 offset to channel 'K'
@@ -6034,11 +6038,11 @@ L15F7:  E = (HL)          // put the low byte in E.
 //   This is either for its own use or in response to a user's request, for
 //   example, when '#' is encountered with output - PRINT, LIST etc.
 //   or with input - INPUT, INKEY$ etc.
-//   It is entered with a system stream $FD - $FF, or a user stream $00 - $0F
+//   It is entered with a system stream $FD - FFh, or a user stream $00 - $0F
 //   in the accumulator.
 
 // CHAN-OPEN
-L1601:  A += A             // double the stream ($FF will become $FE etc.)
+L1601:  A += A             // double the stream (FFh will become $FE etc.)
         A += $16           // add the offset to stream 0 from $5C00
         L = A             // result to L
         H = $5C           // now form the address in STRMS area.
@@ -7207,12 +7211,12 @@ L191C:  Zero = 5,(IY+$37)      // test FLAGX - input mode ?
 
 // OUT-SP-2
 L1925:  A = E             // will be space if OUT-CODE not yet called.
-                                // or $FF if spaces are suppressed.
+                                // or FFh if spaces are suppressed.
                                 // else $30 ('0').
                                 // (from the first instruction at OUT-CODE)
                                 // this guy is just too clever.
         A &= A               // test bit 7 of A.
-        ReturnM               // return if $FF, as leading spaces not
+        ReturnM               // return if FFh, as leading spaces not
                                 // required. This is set when printing line
                                 // number and statement in MAIN-5.
 
@@ -7629,7 +7633,7 @@ L1A1B:  Push DE              // save the
 
         H = B             // transfer the
         L = C             // number to HL.
-        E = $FF           // signal 'no leading zeros'.
+        E = FFh           // signal 'no leading zeros'.
         Jump To L1A30           // forward to continue at OUT-NUM-3
 
 // ---
@@ -7648,9 +7652,9 @@ L1A28:  Push DE              // save flags
 // OUT-NUM-3
 L1A30:  BC = $FC18        // value -1000
         Call L192A           // routine OUT-SP-NO outputs space or number
-        BC = $FF9C        // value -100
+        BC = FFh9C        // value -100
         Call L192A           // routine OUT-SP-NO
-        C = $F6           // value -10 ( B is still $FF )
+        C = $F6           // value -10 ( B is still FFh )
         Call L192A           // routine OUT-SP-NO
         A = L             // remainder to A.
 
@@ -7670,7 +7674,7 @@ L1A42:  Call L15EF           // routine OUT-CODE for final digit.
 // ----------------
 // The offset table
 // ----------------
-// The BASIC interpreter has found a command code $CE - $FF
+// The BASIC interpreter has found a command code $CE - FFh
 // which is then reduced to range $00 - $31 and added to the base address
 // of this table to give the address of an offset which, when added to
 // the offset therein, gives the location in the following parameter table
@@ -8026,7 +8030,7 @@ L1B17:  RES     7,(IY+$01)      // update FLAGS - signal checking syntax
 
         A ^= A               // clear the accumulator.
         LD      ($5C47),A       // set statement number SUBPPC to zero.
-        A--               // set accumulator to $FF.
+        A--               // set accumulator to FFh.
         LD      ($5C3A),A       // set ERR_NR to 'OK' - 1.
         Jump To L1B29           // forward to continue at STMT-L-1.
 
@@ -8156,7 +8160,7 @@ L1B7B:  RST     08H             // ERROR-1
         Byte $14             // Error Report: BREAK into program
 
 // STMT-R-1
-L1B7D:  Zero = 7,(IY+$0A)      // test NSPPC - will be set if $FF -
+L1B7D:  Zero = 7,(IY+$0A)      // test NSPPC - will be set if FFh -
                                 // no jump to be made.
         If !Zero Jump To L1BF4        // forward to STMT-NEXT if a program line.
 
@@ -8172,7 +8176,7 @@ L1B7D:  Zero = 7,(IY+$0A)      // test NSPPC - will be set if $FF -
 // the next statement of a direct command is to be considered.
 
 // LINE-RUN
-L1B8A:  HL = $FFFE        // The dummy value minus two
+L1B8A:  HL = FFhFE        // The dummy value minus two
         LD      ($5C45),HL      // is set/reset as line number in PPC.
         HL = ($5C61)      // point to end of line + 1 - WORKSP.
         HL--              // now point to $80 end-marker.
@@ -8214,7 +8218,7 @@ L1B9E:  Call L196E           // routine LINE-ADDR gets address of line
 
 // REPORT-0
 L1BB0:  RST     08H             // ERROR-1
-        Byte $FF             // Error Report: OK
+        Byte FFh             // Error Report: OK
 
 // -----------------
 // THE 'REM' COMMAND
@@ -8288,7 +8292,7 @@ L1BD1:  LD      ($5C55),HL      // store pointer in system variable NXTLIN
         D = A             // store statement in D.
         E = $00           // set E to zero to suppress token searching
                                 // if EACH-STMT is to be called.
-        LD      (IY+$0A),$FF    // set statement NSPPC to $FF signalling
+        LD      (IY+$0A),FFh    // set statement NSPPC to FFh signalling
                                 // no jump to be made.
         D--              // decrement and test statement
         LD      (IY+$0D),D      // set SUBPPC to decremented statement number.
@@ -8486,7 +8490,7 @@ L1C6C:  Call L28B2           // routine LOOK-VARS
         Push AF              // preserve flags.
         A = C             // fetch type - should be 011xxxxx
         A |= $9F             // combine with 10011111.
-        A++               // test if now $FF by incrementing.
+        A++               // test if now FFh by incrementing.
         If !Zero Jump To L1C8A        // forward to REPORT-C if result not zero.
 
         Pull AF              // else restore flags.
@@ -9380,12 +9384,12 @@ L1EED:  Pull DE              // drop the address STMT-RET
 // TEST-ROOM
 L1F05:  HL = ($5C65)      // fetch STKEND
         HL += BC           // add the supplied test value
-        If Carry Jump To L1F15         // forward to REPORT-4 if over $FFFF
+        If Carry Jump To L1F15         // forward to REPORT-4 if over FFhFF
 
         DE <--> HL           // was less so transfer to DE
         HL = $0050        // test against another 80 bytes
         HL += DE           // anyway
-        If Carry Jump To L1F15         // forward to REPORT-4 if this passes $FFFF
+        If Carry Jump To L1F15         // forward to REPORT-4 if this passes FFhFF
 
         SBC     HL,SP           // if less than the machine stack pointer
         If Carry Return               // then return - OK.
@@ -9470,7 +9474,7 @@ L1F3D:  HALT                    // wait for interrupt.
         If Zero Jump To L1F4F         // forward to PAUSE-END if so.
 
         A = B             // test if
-        A &= C               // now $FFFF
+        A &= C               // now FFhFF
         A++               // that is, initially zero.
         If !Zero Jump To L1F49        // skip forward to PAUSE-2 if not.
 
@@ -10093,7 +10097,7 @@ L213A:  HL = L213A        // address: IN-VAR-1 - this address
 L2148:  HL = ($5C61)      // set HL to WORKSP - start of workspace.
         Call L11A7           // routine REMOVE-FP removes floating point
                                 // forms when looping in error condition.
-        LD      (IY+$00),$FF    // set ERR_NR to 'OK' cancelling the error.
+        LD      (IY+$00),FFh    // set ERR_NR to 'OK' cancelling the error.
                                 // but X_PTR causes flashing error marker
                                 // to be displayed at each call to the editor.
         Call L0F2C           // routine EDITOR allows input to be entered
@@ -10403,11 +10407,11 @@ L21FC:  A -= $C9             // reduce to control character $10 (INK)
 // 0 or 1 for over/inverse.
 
 // CO-TEMP-5
-L2211:  A -= $11             // reduce range $FF-$04
+L2211:  A -= $11             // reduce range FFh-$04
         ADC     A,$00           // add in carry if INK
         If Zero Jump To L2234         // forward to CO-TEMP-7 with INK and PAPER.
 
-        A -= $02             // reduce range $FF-$02
+        A -= $02             // reduce range FFh-$02
         ADC     A,$00           // add carry if FLASH
         If Zero Jump To L2273         // forward to CO-TEMP-C with FLASH and BRIGHT.
 
@@ -10486,7 +10490,7 @@ L2258:  A = C             // load colour to A
 
         A = $07           // put 7 in accumulator
         CP      D               // compare with parameter
-        SBC     A,A             // $00 if 0-7, $FF if 8
+        SBC     A,A             // $00 if 0-7, FFh if 8
         Call L226C           // routine CO-CHANGE addressing MASK-T
                                 // mask returned in A.
 
@@ -10498,7 +10502,7 @@ L2258:  A = C             // load colour to A
         B = A             // transfer to mask
         A = $08           // load A with 8
         CP      D               // compare with parameter
-        SBC     A,A             // $FF if was 9,  $00 if 0-8
+        SBC     A,A             // FFh if was 9,  $00 if 0-8
                                 // continue while addressing P-FLAG
                                 // setting bit 4 if ink 9
                                 // setting bit 6 if paper 9
@@ -10740,7 +10744,7 @@ L2314:  Call L2DD5           // routine FP-TO-A compresses last value into
         C = $01           // prepare a positive sign byte.
         If Zero Return               // return if FP-TO-BC indicated positive.
 
-        C = $FF           // prepare negative sign byte and
+        C = FFh           // prepare negative sign byte and
         Return                // return.
 
 
@@ -11856,25 +11860,25 @@ L254F:  Push BC              // save count
         A = (DE)          // first byte of screen to A
         A ^= (HL)            // xor with corresponding character byte
         If Zero Jump To L255A         // forward to S-SC-MTCH if they match
-                                // if inverse result would be $FF
+                                // if inverse result would be FFh
                                 // if any other then mismatch
 
         A++               // set to $00 if inverse
         If !Zero Jump To L2573        // forward to S-SCR-NXT if a mismatch
 
-        A--               // restore $FF
+        A--               // restore FFh
 
 // a match has been found so seven more to test.
 
 // S-SC-MTCH
-L255A:  C = A             // load C with inverse mask $00 or $FF
+L255A:  C = A             // load C with inverse mask $00 or FFh
         B = $07           // count seven more bytes
 
 // S-SC-ROWS
 L255D:  D++              // increment screen address.
         HL++              // increment bitmap address.
         A = (DE)          // byte to A
-        A ^= (HL)            // will give $00 or $FF (inverse)
+        A ^= (HL)            // will give $00 or FFh (inverse)
         A ^= C               // xor with inverse mask
         If !Zero Jump To L2573        // forward to S-SCR-NXT if no match.
 
@@ -12231,7 +12235,7 @@ L2634:  BC = $105A        // priority $10, operation code $1A ('read-in')
         If !Carry Jump To L2660        // to S-IK$-STK to stack null string if
                                 // invalid
 
-        D--              // D is expected to be FLAGS so set bit 3 $FF
+        D--              // D is expected to be FLAGS so set bit 3 FFh
                                 // 'L' Mode so no keywords.
         E = A             // main key to A
                                 // C is MODE 0 'KLC' from above still.
@@ -13661,7 +13665,7 @@ L2A52:  Call L2530           // routine SYNTAX-Z
 
         Call L2ACD           // routine INT-EXP2 fetches first parameter.
 
-        Push AF              // save flag (will be $FF if parameter>limit)
+        Push AF              // save flag (will be FFh if parameter>limit)
 
         D = B             // transfer the start
         E = C             // to DE overwriting 0001.
@@ -13723,7 +13727,7 @@ L2A94:  Pull AF              // pop the running flag.
         HL++              // increment the length for inclusive byte.
 
         A &= A               // now test the running flag.
-        Go To M,L2A20         // jump back to REPORT-3 if $FF.
+        Go To M,L2A20         // jump back to REPORT-3 if FFh.
                                 // 'Subscript out of range'
 
         B = H             // transfer the length
@@ -13783,12 +13787,12 @@ L2AB6:  Push BC              // save two registers
 // Return result of evaluating next expression
 // -------------------------------------------
 // This clever routine is used to check and evaluate an integer expression
-// which is returned in BC, setting A to $FF, if greater than a limit supplied
+// which is returned in BC, setting A to FFh, if greater than a limit supplied
 // in HL. It is used to check array subscripts, parameters of a string slice
 // and the arguments of the DIM command. In the latter case, the limit check
-// is not required and H is set to $FF. When checking optional string slice
+// is not required and H is set to FFh. When checking optional string slice
 // parameters, it is entered at the second entry point so as not to disturb
-// the running flag A, which may be $00 or $FF from a previous invocation.
+// the running flag A, which may be $00 or FFh from a previous invocation.
 
 // INT-EXP1
 L2ACC:  A ^= A               // set result flag to zero.
@@ -13827,8 +13831,8 @@ L2ACD:  Push DE              // preserve DE register throughout.
         SBC     HL,BC           // subtract value from limit.
 
 // I-CARRY
-L2AE8:  A = D             // move flag to accumulator $00 or $FF.
-        SBC     A,$00           // will set to $FF if carry set.
+L2AE8:  A = D             // move flag to accumulator $00 or FFh.
+        SBC     A,$00           // will set to FFh if carry set.
 
 // I-RESTORE
 L2AEB:  Pull HL              // restore the limit.
@@ -14247,7 +14251,7 @@ L2C2D:  DE <--> HL           // save the element size in DE.
 
 // D-NO-LOOP
 L2C2E:  RST     20H             // NEXT-CHAR
-        H = $FF           // disable limit check by setting HL high
+        H = FFh           // disable limit check by setting HL high
         Call L2ACC           // routine INT-EXP1
         If Carry Go To L2A20         // to REPORT-3 if > 65280 and then some
                                 // 'Subscript out of range'
@@ -14511,7 +14515,7 @@ L2CEB:  CP      $45             // is character 'E' ?
         If !Zero Return              // return as no exponent.
 
 // SIGN-FLAG
-L2CF2:  B = $FF           // initialize temporary sign byte to $FF
+L2CF2:  B = FFh           // initialize temporary sign byte to FFh
 
         RST     20H             // NEXT-CHAR
         CP      $2B             // is character " + ' ?
@@ -14550,7 +14554,7 @@ L2CFF:  Call L2D1B           // routine NUMERIC
                                 // raised later in E-TO-FP so two different
                                 // error messages depending how high A is.
 
-        B++              // $FF to $00 or $00 to $01 - expendable now.
+        B++              // FFh to $00 or $00 to $01 - expendable now.
         If Zero Jump To L2D18         // forward to E-FP-JUMP if exponent positive
 
         NEG                     // Negate the exponent.
@@ -14789,7 +14793,7 @@ L2D8C:  C = $00           // make sign byte positive and continue
 // -------------
 // this routine stores an integer in DE at address HL.
 // It is called from mult, truncate, negate and sgn.
-// The sign byte $00 +ve or $FF -ve is in C.
+// The sign byte $00 +ve or FFh -ve is in C.
 // If negative, the number is stored in 2's complement form so that it is
 // ready to be added.
 
@@ -14886,7 +14890,7 @@ L2DAD:  RST     28H             // FP-CALC
 // LOG(2^A)
 L2DC1:  D = A             // store a copy of A in D.
         RLA                     // test sign bit of A.
-        SBC     A,A             // now $FF if negative or $00
+        SBC     A,A             // now FFh if negative or $00
         E = A             // sign byte to E.
         C = A             // and to C
         A ^= A               // clear A
@@ -15192,7 +15196,7 @@ L2E8A:  A = (HL)          // fetch 0 or prev value
                                 // A picks up the blank nibble
 
 
-        C = $FF           // set a flag to indicate when a significant
+        C = FFh           // set a flag to indicate when a significant
                                 // digit has been encountered.
 
 // PF-DIGITS
@@ -15206,7 +15210,7 @@ L2EA1:  RLD                     // pick up leftmost nibble from (HL)
 
         C--               // test
         C++              // flag
-        If !Zero Jump To L2EB3        // skip forward to PF-TEST-2 if flag still $FF
+        If !Zero Jump To L2EB3        // skip forward to PF-TEST-2 if flag still FFh
                                 // indicating this is a leading zero.
 
 // but if the zero is a significant digit e.g. 10 then include in digit totals.
@@ -15679,7 +15683,7 @@ L3014:  A = (DE)          // fetch first byte of second
         HL++              // address known zero indicator of 1st number
         HL++              // address sign byte
 
-        A = (HL)          // sign to A, $00 or $FF
+        A = (HL)          // sign to A, $00 or FFh
 
         HL++              // address low byte
         C = (HL)          // to C
@@ -16270,7 +16274,7 @@ L3233:  HL--              //
 
         (HL) = A          //
         HL++              //
-        (HL) = $FF        //
+        (HL) = FFh        //
         HL--              //
         A = $18           //
         Jump To L3272           // to NIL-BYTES
@@ -16352,7 +16356,7 @@ L3283:  A &= $07             //
         If Zero Jump To L3290         // to IX-END
 
         B = A             //
-        A = $FF           //
+        A = FFh           //
 
 // LESS-MASK
 L328A:  SLA     A               //
@@ -16373,7 +16377,7 @@ L3290:  DE <--> HL           //
 // Zero is a special case stored as 5 zeros.
 // For integers the form is
 // Byte 1 - zero,
-// Byte 2 - sign byte, $00 +ve, $FF -ve.
+// Byte 2 - sign byte, $00 +ve, FFh -ve.
 // Byte 3 - Low byte of integer.
 // Byte 4 - High byte
 // Byte 5 - unused but always zero.
@@ -16489,7 +16493,7 @@ L32B2:  B--              // decrease exponent
         If !Carry Jump To L32B2        // loop back to RSTK-LOOP
                                 // until a set bit pops into carry
 
-        RRC     C               // now rotate the sign byte $00 or $FF
+        RRC     C               // now rotate the sign byte $00 or FFh
                                 // into carry to give a sign bit
 
         RR      H               // rotate the sign bit to left of H
@@ -16640,12 +16644,12 @@ L32D7:  DEFW    L368F           // $00 Address: $368F - jump-true
         DEFW    L3297           // $3D Address: $3297 - re-stack
 
 //   The following are just the next available slots for the 128 compound
-//   literals which are in range $80 - $FF.
+//   literals which are in range $80 - FFh.
 
         DEFW    L3449           //     Address: $3449 - series-xx    $80 - $9F.
         DEFW    L341B           //     Address: $341B - stk-const-xx $A0 - $BF.
         DEFW    L342D           //     Address: $342D - st-mem-xx    $C0 - $DF.
-        DEFW    L340F           //     Address: $340F - get-mem-xx   $E0 - $FF.
+        DEFW    L340F           //     Address: $340F - get-mem-xx   $E0 - FFh.
 
 //   Aside: 3E - 3F are therefore unused calculator literals.
 //   If the literal has to be also usable as a function then bits 6 and 7 are
@@ -16731,7 +16735,7 @@ L3380:  CP      $18             // compare with first unary operations.
 // it is binary so adjust pointers.
 
         * <--> *                     //
-        BC = $FFFB        // the value -5
+        BC = FFhFB        // the value -5
         D = H             // transfer HL, the last value, to DE.
         E = L             //
         HL += BC           // subtract 5 making HL point to second
@@ -16976,7 +16980,7 @@ L3406:  C = A             // store the original number $00-$1F.
 // ------------------------------
 // Get from memory area ($E0 etc.)
 // ------------------------------
-// Literals $E0 to $FF
+// Literals $E0 to FFh
 // A holds $00-$1F offset.
 // The calculator stack increases by 5 bytes.
 
@@ -17159,7 +17163,7 @@ L3453:  Byte $31             // duplicate       v,v.
 //   integer or floating point, on calculator stack.
 
 // abs
-L346A:  B = $FF           // signal abs
+L346A:  B = FFh           // signal abs
         Jump To L3474           // forward to NEG-TEST
 
 // ---------------------------
@@ -17184,7 +17188,7 @@ L3474:  A = (HL)          // load first byte and
 // for floating point numbers a single bit denotes the sign.
 
         HL++              // address the first byte of mantissa.
-        A = B             // action flag $FF=abs, $00=neg.
+        A = B             // action flag FFh=abs, $00=neg.
         A &= $80             // now         $80      $00
         A |= (HL)            // sets bit 7 for abs
         RLA                     // sets carry for abs and if number negative
@@ -17208,8 +17212,8 @@ L3483:  Push DE              // save STKEND.
 
         Pull HL              // restore the result pointer.
 
-        A = B             // $FF=abs, $00=neg
-        A |= C               // $FF for abs, no change neg
+        A = B             // FFh=abs, $00=neg
+        A |= C               // FFh for abs, no change neg
         CPL                     // $00 for abs, switched for neg
         C = A             // transfer result to sign byte.
 
@@ -17236,7 +17240,7 @@ L3492:  Call L34E9           // call routine TEST-ZERO and
         HL++              // skip over the exponent.
         RL      (HL)            // rotate the sign bit into the carry flag.
         HL--              // step back to point to the result.
-        SBC     A,A             // byte will be $FF if negative, $00 if positive.
+        SBC     A,A             // byte will be FFh if negative, $00 if positive.
         C = A             // store the sign byte in the C register.
         Call L2D8E           // routine INT-STORE to overwrite the last
                                 // value with 0001 and sign.
@@ -17400,7 +17404,7 @@ L34F9:  Call L34E9           // routine TEST-ZERO
         If Carry Return               // return if was zero as this
                                 // is also the Boolean 'false' value.
 
-        A = $FF           // prepare XOR mask for sign bit
+        A = FFh           // prepare XOR mask for sign bit
         Jump To L3507           // forward to SIGN-TO-C
                                 // to put sign in carry
                                 // (carry will become set if sign is positive)
@@ -17840,7 +17844,7 @@ L35B7:  Pull BC              // now second length
 
 // STK-PNTRS
 L35BF:  HL = ($5C65)      // fetch STKEND value from system variable.
-        DE = $FFFB        // the value -5
+        DE = FFhFB        // the value -5
         Push HL              // Push  STKEND value.
 
         HL += DE           // subtract 5 from HL.
@@ -17897,7 +17901,7 @@ L35DE:  HL = ($5C5D)      // fetch value of system variable CH_ADD
         Push HL              // and save on the machine stack.
         A = B             // fetch the literal (either $1D or $18).
         A += $E3           // add $E3 to form $00 (setting carry) or $FB.
-        SBC     A,A             // now form $FF bit 6 = numeric result
+        SBC     A,A             // now form FFh bit 6 = numeric result
                                 // or $00 bit 6 = string result.
         Push AF              // save this mask on the stack
 
@@ -17966,7 +17970,7 @@ L361F:  BC = $0001        // create an initial byte in workspace
         HL = ($5C51)      // fetch value of system variable CURCHL
         Push HL              // and save that too.
 
-        A = $FF           // select system channel 'R'.
+        A = FFh           // select system channel 'R'.
         Call L1601           // routine CHAN-OPEN opens it.
         Call L2DE3           // routine PRINT-FP outputs the number to
                                 // workspace updating K-CUR.
@@ -18110,7 +18114,7 @@ L3686:  * <--> *                     // switch in pointer set
 L3687:  E = (HL)          // the jump byte 0-127 forward, 128-255 back.
         A = E             // transfer to accumulator.
         RLA                     // if backward jump, carry is set.
-        SBC     A,A             // will be $FF if backward or $00 if forward.
+        SBC     A,A             // will be FFh if backward or $00 if forward.
         D = A             // transfer to high byte.
         HL += DE           // advance calculator pointer forward or back.
 
@@ -19001,7 +19005,7 @@ L386C:  Byte $38             // end-calc              last value is 1 or 0.
 // ---------------------
 
 // spare
-L386E:  Byte $FF, $FF        //
+L386E:  Byte FFh, FFh        //
 
 // ----------------------------------------------------------------------------
 // This custom NMI handler provides a way to enter a POKE for a game by typing in
@@ -19105,152 +19109,152 @@ lp1:
         ret
 
 <data>
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-        Byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
+        Byte FFh, FFh, FFh, FFh, FFh, FFh, FFh, FFh
         </data>
 
 // -------------------------------
