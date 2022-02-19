@@ -6,7 +6,8 @@
         "Version": "",
         "License": "",
         "Website": "",
-        "Source": ["Opcode List", "http://www.6502.org/tutorials/6502opcodes.html"],
+        "Source": ["Opcode List",        "http://www.6502.org/tutorials/6502opcodes.html",
+                   "Programming Manual", "http://archive.6502.org/books/mcs6500_family_programming_manual.pdf"],
         "Screenshot": ""
     },
     "Definitions": [
