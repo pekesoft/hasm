@@ -1,33 +1,34 @@
 // Wozniak Apple 1 Monitor
 
-%Base FF00h	// Rom Start
+//%Base FF00h	// Rom Start
 
 //******* Hardware Variables ************
 
-DSP   = $D012	// Video I/O
-DSPCR = $D013
+DSP   = D012h	// Video I/O
+DSPCR = D013h
 
-KBD   = $D010	// Keyboard I/O
-KBDCR = $D011
+KBD   = D010h	// Keyboard I/O
+KBDCR = D011h
 
 //********* Zero Page Variables *********
 
-XAML = $24
-XAMH = $25
-STL  = $26
-STH  = $27
-L    = $28
-H    = $29
-YSAV = $2A
-MODE = $2B
+XAML = 0024h
+XAMH = 0025h
+STL  = 0026h
+STH  = 0027h
+L    = 0028h
+H    = 0029h
+YSAV = 002Ah
+MODE = 002Bh
 
 //******** $200-$27F Text Buffer *********
 
-IN = $0200
+IN = 0200h
 
 //******** Listing *************
 
-RESET:          CLD             // Clear decimal arithmetic mode.
+[FF00] RESET:          
+                CLD             // Clear decimal arithmetic mode.
                 CLI
                 Y = 7Fh        // Mask for DSP data direction register
                 (DSP) = Y         // Set it up.
@@ -98,9 +99,9 @@ NOTHEX:         CPY YSAV        // Check if L, H empty (no hex digits)
                 BVC NOTSTOR     // B6 = 0 for STOR, 1 for XAM and BLOCK XAM
                 A = (L)           // LSD's of hex data.
                 ((STL + X)) = A     // Store at current 'store inX--'.
-                INC STL         // Increment store inX--.
+                (STL)++         // Increment store inX--.
                 BNE NEXTITEM    // Get next item. (no carry).
-                INC STH         // Add carry to 'store inX--' high order.
+                (STH)++         // Add carry to 'store inX--' high order.
 TONEXTITEM:     JMP NEXTITEM    // Get next command item.
 RUN:            JMP (XAML)      // Run at current XAM inX--.
 NOTSTOR:        BMI XAMNEXT     // B7 = 0 for XAM, 1 for BLOCK XAM.
@@ -129,9 +130,9 @@ XAMNEXT:        (MODE) = X        // 0->MODE (XAM mode).
                 A = (XAMH)        // 
                 A -= H + Carry
                 BCS TONEXTITEM  // Not less, so no more data to output.
-                INC XAML        // 
+                (XAML)++        // 
                 BNE MOD8CHK     // Increment 'examine inX--'.
-                INC XAMH        // 
+                (XAMH)++        // 
 MOD8CHK:        A = (XAML)        // Check low-order 'examine inX--' byte
                 A &= 07h        //  For MOD 8=0
                 BPL NXTPRNT     // Always taken.
@@ -152,7 +153,9 @@ ECHO:           BIT DSP         // DA bit (B7) cleared yet?
                 (DSP) = A         // Output character. Sets DA.
                 RTS             // Return.
 
-.byte $0000
-.byte $0F00                     // NMI
-.byte $FF00                     // RESET
-.byte $0000                     // IRQ
+<data >
+    Byte 0000h
+    Byte 0F00h                     // NMI
+    Byte FF00h                     // RESET
+    Byte 0000h                     // IRQ
+    </data>
