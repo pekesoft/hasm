@@ -1,5 +1,7 @@
 // Wozniak Apple 1 Monitor
 
+// 19/02/2022 Coded By ChuxMan - Translation to HASM.
+
 //%Base FF00h	// Rom Start
 
 //******* Hardware Variables ************
@@ -27,135 +29,159 @@ IN = 0200h
 
 //******** Listing *************
 
-[FF00] RESET:          
-                CLD             // Clear decimal arithmetic mode.
-                CLI
-                Y = 7Fh        // Mask for DSP data direction register
-                (DSP) = Y         // Set it up.
-                A = A7h        // KBD and DSP control register mask.
-                (KBDCR) = A       // Enable interrupts, set CA1, CB1, for
-                (DSPCR) = A       //  postitive edge sense/output mode.
-NOTCR:          CMP #$DFh        // "<-"?
-                BEQ BACKSPACE   // Yes.
-                CMP #$9Bh        // ESC?
-                BEQ ESCAPE      // Yes.
-                Y++             // Advance text inX--.
-                BPL NEXTCHAR    // Auto ESC if > 127.
-ESCAPE:         A = DCh        // "\".
-                JSR ECHO        // Output it.
-GETLINE:        A = 8Dh        // CR.
-                JSR ECHO        // Output it.
-                Y = 01h        // Initiallize text inX--.
-BACKSPACE:      Y--             // Backup text inX--.
-                BMI GETLINE     // Beyond start of line, reinitialize
-NEXTCHAR:       A = (KBDCR)       // Key ready?
-                BPL NEXTCHAR    // Loop until ready.
-                A = (KBD)         // Load character. B7 shoul be '1'
-                (IN + Y) = A        // Add to text buffer.
-                JSR ECHO        // Display character.
-                CMP #$8D        // CR?
-                BNE NOTCR       // No.
-                Y = FF        // Reset text inX--.
-                A = 00        // For XAM mode.
-                TAX             // 0->X.
-SETSTOR:        ASL A           // Leaves $7B if setting STOR mode.
-SETMODE:        (MODE) = A        // $00 = XAM, $7B = STOR, $A3 = BLOK XAM
-BLSKIP:         Y++             // Advance text inX--.
-NEXTITEM:       A = (IN + Y)        // Get character.
-                CMP #$8D        // CR?
-                BEQ GETLINE     // Yes, done this line.
-                CMP #$AE        // "."?
-                BCC BLSKIP      // Skip delimiter.
-                BEQ SETMODE     // Set BLOCK XAM mode.
-                CMP #$BA        // ":"?
-                BEQ SETSTOR     // Yes, set STOR mode.
-                CMP #$D2        // "R"?
-                BEQ RUN         // Yes, run user program.
-                (L) = X           // $00->L.
-                (H) = X           //  and H.
-                (YSAV) = Y        // Save Y for comparison.
-NEXTHEX:        A = (IN + Y)        // Get character for hex test.
-                EOR #$B0        // Map digits to $0-9.
-                CMP #$0A        // Digit?
-                BCC DIG         // Yes.
-                A += 88h + Carry        // Map letter "A"-"F" to $FA-FF.
-                CMP #$FA        // Hex letter?
-                BCC NOTHEX      // No, character not hex.
-DIG:            ASL A
-                ASL A           // Hex digit to MSD of A.
-                ASL A           //
-                ASL A           //
-                X = 04h        // Shift count.
-HEXSHIFT:       ASL A           // Hex digit left, MSDB to carry.
-                ROL L           // Rotate into LSD.
-                ROL H           // Rotate into MSD's.
-                X--             // Done 4 shifts?
-                BNE HEXSHIFT    // No, loop.
-                Y++             // Advance text inX--.
-                BNE NEXTHEX     // Always taken. Check next character for hex.
-NOTHEX:         CPY YSAV        // Check if L, H empty (no hex digits)
-                BEQ ESCAPE      // Yes, generate ESC sequence.
-                BIT MODE        // Test MODE byte.
-                BVC NOTSTOR     // B6 = 0 for STOR, 1 for XAM and BLOCK XAM
-                A = (L)           // LSD's of hex data.
-                ((STL + X)) = A     // Store at current 'store inX--'.
-                (STL)++         // Increment store inX--.
-                BNE NEXTITEM    // Get next item. (no carry).
-                (STH)++         // Add carry to 'store inX--' high order.
-TONEXTITEM:     JMP NEXTITEM    // Get next command item.
-RUN:            JMP (XAML)      // Run at current XAM inX--.
-NOTSTOR:        BMI XAMNEXT     // B7 = 0 for XAM, 1 for BLOCK XAM.
-                X = 02        // Byte count.
-SETADR:         A = (L-1 + X)       // Copy hex data to
-                (STL-1 + X) = A     //  'store inX--'.
-                (XAML-1 + X) = A    // And to 'XAM inX--'.
-                X--             // Next of 2 bytes.
-                BNE SETADR      // Loop unless X = 0.
-NXTPRNT:        BNE PRDATA      // NE means no address to print.
-                A = 8Dh        // CR.
-                JSR ECHO        // Output it.
-                A = (XAMH)        // 'Examine inX--' high-order byte.
-                JSR PRBYTE      // Output it in hex format.
-                A = (XAML)        // Low-order 'examine inX--' byte.
-                JSR PRBYTE      // Output it in hex format.
-                A = BAh        // ":".
-                JSR ECHO        // Output it.
-PRDATA:         A = A0h        // Blank.
-                JSR ECHO        // Output it.
-                A = ((XAML + X))    // Get data byte at 'examine inX--'
-                JSR PRBYTE      // Output it in hex format.
-XAMNEXT:        (MODE) = X        // 0->MODE (XAM mode).
-                A = (XAML)
-                CMP L           // Comapre 'examine inX--' to hex data.
-                A = (XAMH)        // 
-                A -= H + Carry
-                BCS TONEXTITEM  // Not less, so no more data to output.
-                (XAML)++        // 
-                BNE MOD8CHK     // Increment 'examine inX--'.
-                (XAMH)++        // 
-MOD8CHK:        A = (XAML)        // Check low-order 'examine inX--' byte
-                A &= 07h        //  For MOD 8=0
-                BPL NXTPRNT     // Always taken.
-PRBYTE:         PHA             // Save A for LSD.
-                LSR A
-                LSR A
-                LSR A           // MSD to LSD position.
-                LSR A
-                JSR PRHEX       // Output hex digit.
-                PLA             // Restore A.
-PRHEX:          A &= 0Fh        // Make LSD for hex print.
-                A |= B0h        // Add "0".
-                CMP #$BA        // Digit?
-                BCC ECHO        // Yes, output it.
-                A += 06 + Carry        // Add offset for letter.
-ECHO:           BIT DSP         // DA bit (B7) cleared yet?
-                BMI ECHO        // No, wait for display
-                (DSP) = A         // Output character. Sets DA.
-                RTS             // Return.
+[FF00] Reset:          
+    CLD                     // Clear decimal arithmetic mode.
+    CLI
+    Y = 7Fh                 // Mask for DSP data direction register
+    (DSP) = Y               // Set it up.
+    A = A7h                 // KBD and DSP control register mask.
+    (KBDCR) = A             // Enable interrupts, set CA1, CB1, for
+    (DSPCR) = A             //  postitive edge sense/output mode.
+NotCR:
+    CMP #$DFh               // "<-"?
+    BEQ Backspace           // Yes.
+    CMP #$9Bh               // ESC?
+    BEQ Escape              // Yes.
+    Y++                     // Advance text inX--.
+    BPL NextChar            // Auto ESC if > 127.
+Escape:
+    A = DCh                 // "\".
+    JSR Echo                // Output it.
+GetLine:
+    A = 8Dh                 // CR.
+    JSR Echo                // Output it.
+    Y = 01h                 // Initiallize text inX--.
+Backspace:
+    Y--                     // Backup text inX--.
+    BMI GetLine             // Beyond start of line, reinitialize
+NextChar:
+    A = (KBDCR)             // Key ready?
+    BPL NextChar            // Loop until ready.
+    A = (KBD)               // Load character. B7 shoul be '1'
+    (IN + Y) = A            // Add to text buffer.
+    JSR Echo                // Display character.
+    CMP #$8D                // CR?
+    BNE NotCR               // No.
+    Y = FFh                 // Reset text inX--.
+    A = 00h                 // For XAM mode.
+    TAX                     // 0->X.
+SETSTOR:
+    ASL A                   // Leaves $7B if setting STOR mode.
+SetMode:
+    (MODE) = A              // $00 = XAM, $7B = STOR, $A3 = BLOK XAM
+BLSKIP:
+    Y++                     // Advance text inX--.
+NextItem:
+    A = (IN + Y)            // Get character.
+    CMP #$8D                // CR?
+    BEQ GetLine             // Yes, done this line.
+    CMP #$AE                // "."?
+    BCC BLSKIP              // Skip delimiter.
+    BEQ SetMode             // Set BLOCK XAM mode.
+    CMP #$BA                // ":"?
+    BEQ SETSTOR             // Yes, set STOR mode.
+    CMP #$D2                // "R"?
+    BEQ RUN                 // Yes, run user program.
+    (L) = X                 // $00->L.
+    (H) = X                 //  and H.
+    (YSAV) = Y              // Save Y for comparison.
+NextHex:
+    A = (IN + Y)            // Get character for hex test.
+    EOR #$B0                // Map digits to $0-9.
+    CMP #$0A                // Digit?
+    BCC DIG                 // Yes.
+    A += 88h + Carry        // Map letter "A"-"F" to $FA-FF.
+    CMP #$FA                // Hex letter?
+    BCC NotHex              // No, character not hex.
+DIG:
+    ASL A
+    ASL A                   // Hex digit to MSD of A.
+    ASL A
+    ASL A
+    X = 04h                 // Shift count.
+HexShift:
+    ASL A                   // Hex digit left, MSDB to carry.
+    ROL L                   // Rotate into LSD.
+    ROL H                   // Rotate into MSD's.
+    X--                     // Done 4 shifts?
+    BNE HexShift            // No, loop.
+    Y++                     // Advance text inX--.
+    BNE NextHex             // Always taken. Check next character for hex.
+NotHex:
+    CPY YSAV                // Check if L, H empty (no hex digits)
+    BEQ Escape              // Yes, generate ESC sequence.
+    BIT MODE                // Test MODE byte.
+    BVC NOTSTOR             // B6 = 0 for STOR, 1 for XAM and BLOCK XAM
+    A = (L)                 // LSD's of hex data.
+    ((STL + X)) = A         // Store at current 'store inX--'.
+    (STL)++                 // Increment store inX--.
+    BNE NextItem            // Get next item. (no carry).
+    (STH)++                 // Add carry to 'store inX--' high order.
+ToNextItem:
+    JMP NextItem            // Get next command item.
+RUN:
+    JMP (XAML)              // Run at current XAM inX--.
+NOTSTOR:
+    BMI XAMNEXT             // B7 = 0 for XAM, 1 for BLOCK XAM.
+    X = 02h                 // Byte count.
+SetAddress:
+    A = ({L - 1} + X)       // Copy hex data to
+    ({STL - 1} + X) = A     //  'store inX--'.
+    ({XAML - 1} + X) = A    // And to 'XAM inX--'.
+    X--                     // Next of 2 bytes.
+    BNE SetAddress          // Loop unless X = 0.
+NextPrint:
+    BNE PrintData           // NE means no address to print.
+    A = 8Dh                 // CR.
+    JSR Echo                // Output it.
+    A = (XAMH)              // 'Examine inX--' high-order byte.
+    JSR PrintByte           // Output it in hex format.
+    A = (XAML)              // Low-order 'examine inX--' byte.
+    JSR PrintByte           // Output it in hex format.
+    A = BAh                 // ":".
+    JSR Echo                // Output it.
+PrintData:
+    A = A0h                 // Blank.
+    JSR Echo                // Output it.
+    A = ((XAML + X))        // Get data byte at 'examine inX--'
+    JSR PrintByte           // Output it in hex format.
+XAMNEXT:
+    (MODE) = X              // 0->MODE (XAM mode).
+    A = (XAML)
+    CMP L                   // Comapre 'examine inX--' to hex data.
+    A = (XAMH)
+    A -= H + Carry
+    BCS ToNextItem          // Not less, so no more data to output.
+    (XAML)++
+    BNE MOD8CHK             // Increment 'examine inX--'.
+    (XAMH)++ 
+MOD8CHK:
+    A = (XAML)              // Check low-order 'examine inX--' byte
+    A &= 07h                //  For MOD 8=0
+    BPL NextPrint           // Always taken.
+PrintByte:
+    PHA                     // Save A for LSD.
+    LSR A
+    LSR A
+    LSR A                   // MSD to LSD position.
+    LSR A
+    JSR PrintHex            // Output hex digit.
+    PLA                     // Restore A.
+PrintHex:
+    A &= 0Fh                // Make LSD for hex print.
+    A |= B0h                // Add "0".
+    CMP #$BA                // Digit?
+    BCC Echo                // Yes, output it.
+    A += 06h + Carry        // Add offset for letter.
+Echo:
+    BIT DSP                 // DA bit (B7) cleared yet?
+    BMI Echo                // No, wait for display
+    (DSP) = A               // Output character. Sets DA.
+    RTS                     // Return.
 
-<data >
+<data>
     Byte 0000h
-    Byte 0F00h                     // NMI
-    Byte FF00h                     // RESET
-    Byte 0000h                     // IRQ
+    Byte 0F00h              // NMI
+    Byte FF00h              // Reset
+    Byte 0000h              // IRQ
     </data>
