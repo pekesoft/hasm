@@ -6,87 +6,87 @@
 
 //******* Hardware Variables ************
 
-DSP   = D012h	// Video I/O
-DSPCR = D013h
+$DSP   = D012h	// Video I/O
+$DSPCR = D013h
 
-KBD   = D010h	// Keyboard I/O
-KBDCR = D011h
+$KBD   = D010h	// Keyboard I/O
+$KBDCR = D011h
 
 //********* Zero Page Variables *********
 
-XAML = 0024h
-XAMH = 0025h
-STL  = 0026h
-STH  = 0027h
-L    = 0028h
-H    = 0029h
-YSAV = 002Ah
-MODE = 002Bh
+    $XAML = 0024h
+    $XAMH = 0025h
+    $STL  = 0026h
+    $STH  = 0027h
+    $L    = 0028h
+    $H    = 0029h
+    $YSAV = 002Ah
+    $MODE = 002Bh
 
 //******** $200-$27F Text Buffer *********
 
-IN = 0200h
+$IN = 0200h
 
-//******** Listing *************
+//******** List$INg *************
 
 [FF00] Reset:          
     Decimal = False         // Clear decimal arithmetic mode.
     Interrupts = True
-    Y = 7Fh                 // Mask for DSP data direction register
-    (DSP) = Y               // Set it up.
-    A = A7h                 // KBD and DSP control register mask.
-    (KBDCR) = A             // Enable interrupts, set CA1, CB1, for
-    (DSPCR) = A             //  postitive edge sense/output mode.
+    Y = 7Fh                 // Mask for $DSP data direction register
+    ($DSP) = Y               // Set it up.
+    A = A7h                 // $KBD and $DSP control register mask.
+    ($KBDCR) = A             // Enable $INterrupts, set CA1, CB1, for
+    ($DSPCR) = A             //  postitive edge sense/output mode.
 NotCR:
     F <-- A - DFh           // "<-"?
     If Zero Jump To Backspace           // Yes.
     F <-- A - 9Bh           // ESC?
     If Zero Jump To Escape              // Yes.
-    Y++                     // Advance text inX--.
+    Y++                     // Advance text $INX--.
     If !Negative Jump To NextChar            // Auto ESC if > 127.
 Escape:
     A = DCh                 // "\".
     JSR Echo                // Output it.
-GetLine:
+GetL$INe:
     A = 8Dh                 // CR.
     JSR Echo                // Output it.
-    Y = 01h                 // Initiallize text inX--.
+    Y = 01h                 // $INitiallize text $INX--.
 Backspace:
-    Y--                     // Backup text inX--.
-    If Negative Jump To GetLine             // Beyond start of line, reinitialize
+    Y--                     // Backup text $INX--.
+    If Negative Jump To GetL$INe             // Beyond start of l$INe, re$INitialize
 NextChar:
-    A = (KBDCR)             // Key ready?
+    A = ($KBDCR)             // Key ready?
     If !Negative Jump To NextChar            // Loop until ready.
-    A = (KBD)               // Load character. B7 shoul be '1'
-    (IN + Y) = A            // Add to text buffer.
+    A = ($KBD)               // Load character. B7 shoul be '1'
+    ($IN + Y) = A            // Add to text buffer.
     JSR Echo                // Display character.
     F <-- A - 8Dh           // CR?
     If !Zero Jump To NotCR               // No.
-    Y = FFh                 // Reset text inX--.
-    A = 00h                 // For XAM mode.
+    Y = FFh                 // Reset text $INX--.
+    A = 00h                 // For XAM $MODE.
     TAX                     // 0->X.
 SETSTOR:
-    ASL A                   // Leaves $7B if setting STOR mode.
-SetMode:
-    (MODE) = A              // $00 = XAM, $7B = STOR, $A3 = BLOK XAM
+    ASL A                   // Leaves $7B if sett$INg STOR $MODE.
+Set$MODE:
+    ($MODE) = A              // $00 = XAM, $7B = STOR, $A3 = BLOK XAM
 BLSKIP:
-    Y++                     // Advance text inX--.
+    Y++                     // Advance text $INX--.
 NextItem:
-    A = (IN + Y)            // Get character.
+    A = ($IN + Y)            // Get character.
     F <-- A - 8Dh           // CR?
-    If Zero Jump To GetLine             // Yes, done this line.
+    If Zero Jump To GetL$INe             // Yes, done this l$INe.
     F <-- A - AEh           // "."?
     If !Carry Jump To BLSKIP              // Skip delimiter.
-    If Zero Jump To SetMode             // Set BLOCK XAM mode.
+    If Zero Jump To Set$MODE             // Set BLOCK XAM $MODE.
     F <-- A - BAh           // ":"?
-    If Zero Jump To SETSTOR             // Yes, set STOR mode.
+    If Zero Jump To SETSTOR             // Yes, set STOR $MODE.
     F <-- A - D2h           // "R"?
     If Zero Jump To RUN                 // Yes, run user program.
     (L) = X                 // $00->L.
     (H) = X                 //  and H.
-    (YSAV) = Y              // Save Y for comparison.
+    ($YSAV) = Y              // Save Y for comparison.
 NextHex:
-    A = (IN + Y)            // Get character for hex test.
+    A = ($IN + Y)            // Get character for hex test.
     A ^= B0                // Map digits to $0-9.
     F <-- A - 0Ah           // Digit?
     If !Carry Jump To DIG                 // Yes.
@@ -101,82 +101,82 @@ DIG:
     X = 04h                 // Shift count.
 HexShift:
     ASL A                   // Hex digit left, MSDB to carry.
-    ROL L                   // Rotate into LSD.
-    ROL H                   // Rotate into MSD's.
+    ROL$L                  // Rotate $INto LSD.
+    ROL$H                  // Rotate $INto MSD's.
     X--                     // Done 4 shifts?
     If !Zero Jump To HexShift            // No, loop.
-    Y++                     // Advance text inX--.
+    Y++                     // Advance text $INX--.
     If !Zero Jump To NextHex             // Always taken. Check next character for hex.
 NotHex:
-    CPY YSAV                // Check if L, H empty (no hex digits)
+    F <-- Y - $YSAV                // Check if L,$Hempty (no hex digits)
     If Zero Jump To Escape              // Yes, generate ESC sequence.
-    BIT MODE                // Test MODE byte.
+    BIT $MODE                // Test $MODE byte.
     If !Overflow Jump To  NOTSTOR             // B6 = 0 for STOR, 1 for XAM and BLOCK XAM
     A = (L)                 // LSD's of hex data.
-    ((STL + X)) = A         // Store at current 'store inX--'.
-    (STL)++                 // Increment store inX--.
+    (($STL + X)) = A         // Store at current 'store $INX--'.
+    ($STL)++                 // $INcrement store $INX--.
     If !Zero Jump To NextItem            // Get next item. (no carry).
-    (STH)++                 // Add carry to 'store inX--' high order.
+    ($STH)++                 // Add carry to 'store $INX--' high order.
 ToNextItem:
     Go To NextItem            // Get next command item.
 RUN:
-    Go To (XAML)              // Run at current XAM inX--.
+    Go To ($XAML)              // Run at current XAM $INX--.
 NOTSTOR:
     If Negative Jump To XAMNEXT             // B7 = 0 for XAM, 1 for BLOCK XAM.
     X = 02h                 // Byte count.
 SetAddress:
-    A = ({L - 1} + X)       // Copy hex data to
-    ({STL - 1} + X) = A     //  'store inX--'.
-    ({XAML - 1} + X) = A    // And to 'XAM inX--'.
+    A = ({$L - 1} + X)       // Copy hex data to
+    ({$STL - 1} + X) = A     //  'store $INX--'.
+    ({$XAML - 1} + X) = A    // And to 'XAM $INX--'.
     X--                     // Next of 2 bytes.
     If !Zero Jump To SetAddress          // Loop unless X = 0.
-NextPrint:
-    If !Zero Jump To PrintData           // NE means no address to print.
+NextPr$INt:
+    If !Zero Jump To Pr$INtData           // NE means no address to pr$INt.
     A = 8Dh                 // CR.
     JSR Echo                // Output it.
-    A = (XAMH)              // 'Examine inX--' high-order byte.
-    JSR PrintByte           // Output it in hex format.
-    A = (XAML)              // Low-order 'examine inX--' byte.
-    JSR PrintByte           // Output it in hex format.
+    A = ($XAMH)              // 'Exam$INe $INX--' high-order byte.
+    JSR Pr$INtByte           // Output it $IN hex format.
+    A = ($XAML)              // Low-order 'exam$INe $INX--' byte.
+    JSR Pr$INtByte           // Output it $IN hex format.
     A = BAh                 // ":".
     JSR Echo                // Output it.
-PrintData:
+Pr$INtData:
     A = A0h                 // Blank.
     JSR Echo                // Output it.
-    A = ((XAML + X))        // Get data byte at 'examine inX--'
-    JSR PrintByte           // Output it in hex format.
+    A = (($XAML + X))        // Get data byte at 'exam$INe $INX--'
+    JSR Pr$INtByte           // Output it $IN hex format.
 XAMNEXT:
-    (MODE) = X              // 0->MODE (XAM mode).
-    A = (XAML)
-    F <-- A - L                   // Comapre 'examine inX--' to hex data.
-    A = (XAMH)
-    A -= H + Carry
+    ($MODE) = X              // 0->$MODE (XAM $MODE).
+    A = ($XAML)
+    F <-- A - $L                  // Comapre 'exam$INe $INX--' to hex data.
+    A = ($XAMH)
+    A -= $H + Carry
     If Carry Jump To ToNextItem          // Not less, so no more data to output.
-    (XAML)++
-    If !Zero Jump To MOD8CHK             // Increment 'examine inX--'.
-    (XAMH)++ 
+    ($XAML)++
+    If !Zero Jump To MOD8CHK             // $INcrement 'exam$INe $INX--'.
+    ($XAMH)++ 
 MOD8CHK:
-    A = (XAML)              // Check low-order 'examine inX--' byte
+    A = ($XAML)              // Check low-order 'exam$INe $INX--' byte
     A &= 07h                //  For MOD 8=0
-    If !Negative Jump To NextPrint           // Always taken.
-PrintByte:
+    If !Negative Jump To NextPr$INt           // Always taken.
+Pr$INtByte:
     PHA                     // Save A for LSD.
     LSR A
     LSR A
     LSR A                   // MSD to LSD position.
     LSR A
-    JSR PrintHex            // Output hex digit.
+    JSR Pr$INtHex            // Output hex digit.
     PLA                     // Restore A.
-PrintHex:
-    A &= 0Fh                // Make LSD for hex print.
+Pr$INtHex:
+    A &= 0Fh                // Make LSD for hex pr$INt.
     A |= B0h                // Add "0".
     F <-- A - BAh           // Digit?
     If !Carry Jump To Echo                // Yes, output it.
     A += 06h + Carry        // Add offset for letter.
 Echo:
-    BIT DSP                 // DA bit (B7) cleared yet?
+    BIT $DSP                 // DA bit (B7) cleared yet?
     If Negative Jump To Echo                // No, wait for display
-    (DSP) = A               // Output character. Sets DA.
+    ($DSP) = A               // Output character. Sets DA.
     RTS                     // Return.
 
 <data>
