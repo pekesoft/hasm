@@ -1,16 +1,15 @@
 // Wozniak Apple 1 Monitor
 
-// 19/02/2022 Coded By ChuxMan - Translation to HASM.
-
-//%Base FF00h	// Rom Start
+    // 19/02/2022 Coded By ChuxMan - Translation to HASM.
+    //%Base FF00h	// Rom Start
 
 //******* Hardware Variables ************
 
-$DSP   = D012h	// Video I/O
-$DSPCR = D013h
+    $DSP   = D012h	// Video I/O
+    $DSPCR = D013h
 
-$KBD   = D010h	// Keyboard I/O
-$KBDCR = D011h
+    $KBD   = D010h	// Keyboard I/O
+    $KBDCR = D011h
 
 //********* Zero Page Variables *********
 
@@ -25,126 +24,146 @@ $KBDCR = D011h
 
 //******** $200-$27F Text Buffer *********
 
-$IN = 0200h
+    $IN = 0200h
 
-//******** List$INg *************
+//******** Listing *************
 
 [FF00] Reset:          
-    Decimal = False         // Clear decimal arithmetic mode.
+    Decimal = False                 // Clear decimal arithmetic mode.
     Interrupts = True
-    Y = 7Fh                 // Mask for $DSP data direction register
-    ($DSP) = Y               // Set it up.
-    A = A7h                 // $KBD and $DSP control register mask.
-    ($KBDCR) = A             // Enable $INterrupts, set CA1, CB1, for
-    ($DSPCR) = A             //  postitive edge sense/output mode.
+    Y = 7Fh                         // Mask for $DSP data direction register
+    ($DSP) = Y                      // Set it up.
+    A = A7h                         // $KBD and $DSP control register mask.
+    ($KBDCR) = A                    // Enable interrupts, set CA1, CB1, for
+    ($DSPCR) = A                    //  postitive edge sense/output mode.
+
 NotCR:
-    F <-- A - DFh           // "<-"?
-    If Zero Jump To Backspace           // Yes.
-    F <-- A - 9Bh           // ESC?
-    If Zero Jump To Escape              // Yes.
-    Y++                     // Advance text $INX--.
-    If !Negative Jump To NextChar            // Auto ESC if > 127.
+    F <-- A - DFh                   // "<-"?
+    If Zero Jump To Backspace       // Yes.
+    F <-- A - 9Bh                   // ESC?
+    If Zero Jump To Escape          // Yes.
+    Y++                             // Advance text $INX--.
+    If !Negative Jump To NextChar   // Auto ESC if > 127.
+
 Escape:
-    A = DCh                 // "\".
-    JSR Echo                // Output it.
-GetL$INe:
-    A = 8Dh                 // CR.
-    JSR Echo                // Output it.
-    Y = 01h                 // $INitiallize text $INX--.
+    A = DCh                         // "\".
+    JSR Echo                        // Output it.
+
+GetLine:
+    A = 8Dh                         // CR.
+    JSR Echo                        // Output it.
+    Y = 01h                         // Initiallize text inX--.
+
 Backspace:
-    Y--                     // Backup text $INX--.
-    If Negative Jump To GetL$INe             // Beyond start of l$INe, re$INitialize
+    Y--                             // Backup text inX--.
+    If Negative Jump To GetLine     // Beyond start of line, reinitialize
+
 NextChar:
-    A = ($KBDCR)             // Key ready?
-    If !Negative Jump To NextChar            // Loop until ready.
-    A = ($KBD)               // Load character. B7 shoul be '1'
-    ($IN + Y) = A            // Add to text buffer.
-    JSR Echo                // Display character.
-    F <-- A - 8Dh           // CR?
-    If !Zero Jump To NotCR               // No.
-    Y = FFh                 // Reset text $INX--.
-    A = 00h                 // For XAM $MODE.
-    TAX                     // 0->X.
-SETSTOR:
-    ASL A                   // Leaves $7B if sett$INg STOR $MODE.
-Set$MODE:
-    ($MODE) = A              // $00 = XAM, $7B = STOR, $A3 = BLOK XAM
-BLSKIP:
-    Y++                     // Advance text $INX--.
+    A = ($KBDCR)                    // Key ready?
+    If !Negative Jump To NextChar   // Loop until ready.
+    A = ($KBD)                      // Load character. B7 should be '1'
+    ($IN + Y) = A                   // Add to text buffer.
+    JSR Echo                        // Display character.
+    F <-- A - 8Dh                   // CR?
+    If !Zero Jump To NotCR          // No.
+    Y = FFh                         // Reset text inX--.
+    A = 00h                         // For XAM mode.
+    TAX                             // 0->X.
+
+SetStore:
+    ASL A                           // Leaves $7B if setting STOR mode.
+
+SetMode:
+    ($MODE) = A                     // $00 = XAM, $7B = STOR, $A3 = BLOK XAM
+
+BlockSkip:
+    Y++                             // Advance text inX--.
+
 NextItem:
-    A = ($IN + Y)            // Get character.
-    F <-- A - 8Dh           // CR?
-    If Zero Jump To GetL$INe             // Yes, done this l$INe.
-    F <-- A - AEh           // "."?
-    If !Carry Jump To BLSKIP              // Skip delimiter.
-    If Zero Jump To Set$MODE             // Set BLOCK XAM $MODE.
-    F <-- A - BAh           // ":"?
-    If Zero Jump To SETSTOR             // Yes, set STOR $MODE.
-    F <-- A - D2h           // "R"?
-    If Zero Jump To RUN                 // Yes, run user program.
-    (L) = X                 // $00->L.
-    (H) = X                 //  and H.
-    ($YSAV) = Y              // Save Y for comparison.
+    A = ($IN + Y)                   // Get character.
+    F <-- A - 8Dh                   // CR?
+    If Zero Jump To GetLine         // Yes, done this line.
+    F <-- A - AEh                   // "."?
+    If !Carry Jump To BlockSkip     // Skip delimiter.
+    If Zero Jump To SetMode         // Set BLOCK XAM mode.
+    F <-- A - BAh                   // ":"?
+    If Zero Jump To SetStore        // Yes, set STOR mode.
+    F <-- A - D2h                   // "R"?
+    If Zero Jump To Run             // Yes, Run user program.
+    (L) = X                         // $00->L.
+    (H) = X                         //  and H.
+    ($YSAV) = Y                     // Save Y for comparison.
+
 NextHex:
-    A = ($IN + Y)            // Get character for hex test.
-    A ^= B0                // Map digits to $0-9.
-    F <-- A - 0Ah           // Digit?
-    If !Carry Jump To DIG                 // Yes.
-    A += 88h + Carry        // Map letter "A"-"F" to $FA-FF.
-    F <-- A - FAh           // Hex letter?
-    If !Carry Jump To NotHex              // No, character not hex.
+    A = ($IN + Y)                   // Get character for hex test.
+    A ^= B0                         // Map digits to $0-9.
+    F <-- A - 0Ah                   // Digit?
+    If !Carry Jump To DIG           // Yes.
+    A += 88h + Carry                // Map letter "A"-"F" to $FA-FF.
+    F <-- A - FAh                   // Hex letter?
+    If !Carry Jump To NotHex        // No, character not hex.
+
 DIG:
     ASL A
-    ASL A                   // Hex digit to MSD of A.
+    ASL A                           // Hex digit to MSD of A.
     ASL A
     ASL A
-    X = 04h                 // Shift count.
+    X = 04h                         // Shift count.
+
 HexShift:
-    ASL A                   // Hex digit left, MSDB to carry.
-    ROL$L                  // Rotate $INto LSD.
-    ROL$H                  // Rotate $INto MSD's.
-    X--                     // Done 4 shifts?
-    If !Zero Jump To HexShift            // No, loop.
-    Y++                     // Advance text $INX--.
-    If !Zero Jump To NextHex             // Always taken. Check next character for hex.
+    ASL A                           // Hex digit left, MSDB to carry.
+    ROL$L                           // Rotate $INto LSD.
+    ROL$H                           // Rotate $INto MSD's.
+    X--                             // Done 4 shifts?
+    If !Zero Jump To HexShift       // No, loop.
+    Y++                             // Advance text $INX--.
+    If !Zero Jump To NextHex        // Always taken. Check next character for hex.
+
 NotHex:
-    F <-- Y - $YSAV                // Check if L,$Hempty (no hex digits)
-    If Zero Jump To Escape              // Yes, generate ESC sequence.
-    BIT $MODE                // Test $MODE byte.
-    If !Overflow Jump To  NOTSTOR             // B6 = 0 for STOR, 1 for XAM and BLOCK XAM
-    A = (L)                 // LSD's of hex data.
-    (($STL + X)) = A         // Store at current 'store $INX--'.
-    ($STL)++                 // $INcrement store $INX--.
-    If !Zero Jump To NextItem            // Get next item. (no carry).
-    ($STH)++                 // Add carry to 'store $INX--' high order.
+    F <-- Y - $YSAV                 // Check if L,$Hempty (no hex digits)
+    If Zero Jump To Escape          // Yes, generate ESC sequence.
+    BIT $MODE                       // Test $MODE byte.
+    If !Overflow Jump To  NOTSTOR   // B6 = 0 for STOR, 1 for XAM and BLOCK XAM
+    A = (L)                         // LSD's of hex data.
+    (($STL + X)) = A                // Store at current 'store $INX--'.
+    ($STL)++                        // $INcrement store $INX--.
+    If !Zero Jump To NextItem       // Get next item. (no carry).
+    ($STH)++                        // Add carry to 'store $INX--' high order.
+
 ToNextItem:
-    Go To NextItem            // Get next command item.
-RUN:
-    Go To ($XAML)              // Run at current XAM $INX--.
+    Go To NextItem                  // Get next command item.
+
+Run:
+    Go To ($XAML)                   // Run at current XAM $INX--.
+
 NOTSTOR:
-    If Negative Jump To XAMNEXT             // B7 = 0 for XAM, 1 for BLOCK XAM.
-    X = 02h                 // Byte count.
+    If Negative Jump To XAMNEXT     // B7 = 0 for XAM, 1 for BLOCK XAM.
+    X = 02h                         // Byte count.
+
 SetAddress:
-    A = ({$L - 1} + X)       // Copy hex data to
-    ({$STL - 1} + X) = A     //  'store $INX--'.
-    ({$XAML - 1} + X) = A    // And to 'XAM $INX--'.
-    X--                     // Next of 2 bytes.
-    If !Zero Jump To SetAddress          // Loop unless X = 0.
-NextPr$INt:
-    If !Zero Jump To Pr$INtData           // NE means no address to pr$INt.
-    A = 8Dh                 // CR.
-    JSR Echo                // Output it.
-    A = ($XAMH)              // 'Exam$INe $INX--' high-order byte.
-    JSR Pr$INtByte           // Output it $IN hex format.
-    A = ($XAML)              // Low-order 'exam$INe $INX--' byte.
-    JSR Pr$INtByte           // Output it $IN hex format.
-    A = BAh                 // ":".
-    JSR Echo                // Output it.
-Pr$INtData:
+    A = ({$L - 1} + X)              // Copy hex data to
+    ({$STL - 1} + X) = A            //  'store inX--'.
+    ({$XAML - 1} + X) = A           // And to 'XAM inX--'.
+    X--                             // Next of 2 bytes.
+    If !Zero Jump To SetAddress     // Loop unless X = 0.
+
+NextPrint:
+    If !Zero Jump To PrintData     // NE means no address to Print.
+    A = 8Dh                         // CR.
+    JSR Echo                        // Output it.
+    A = ($XAMH)                     // 'Examine inX--' high-order byte.
+    JSR PrintByte                  // Output it in hex format.
+    A = ($XAML)                     // Low-order 'examine inX--' byte.
+    JSR PrintByte                  // Output it in hex format.
+    A = BAh                         // ":".
+    JSR Echo                        // Output it.
+
+PrintData:
     A = A0h                 // Blank.
     JSR Echo                // Output it.
-    A = (($XAML + X))        // Get data byte at 'exam$INe $INX--'
-    JSR Pr$INtByte           // Output it $IN hex format.
+    A = (($XAML + X))        // Get data byte at 'examine inX--'
+    JSR PrintByte           // Output it in hex format.
+
 XAMNEXT:
     ($MODE) = X              // 0->$MODE (XAM $MODE).
     A = ($XAML)
@@ -155,24 +174,28 @@ XAMNEXT:
     ($XAML)++
     If !Zero Jump To MOD8CHK             // $INcrement 'exam$INe $INX--'.
     ($XAMH)++ 
+
 MOD8CHK:
     A = ($XAML)              // Check low-order 'exam$INe $INX--' byte
     A &= 07h                //  For MOD 8=0
-    If !Negative Jump To NextPr$INt           // Always taken.
-Pr$INtByte:
+    If !Negative Jump To NextPrint           // Always taken.
+
+PrintByte:
     PHA                     // Save A for LSD.
     LSR A
     LSR A
     LSR A                   // MSD to LSD position.
     LSR A
-    JSR Pr$INtHex            // Output hex digit.
+    JSR PrintHex            // Output hex digit.
     PLA                     // Restore A.
-Pr$INtHex:
-    A &= 0Fh                // Make LSD for hex pr$INt.
+
+PrintHex:
+    A &= 0Fh                // Make LSD for hex Print.
     A |= B0h                // Add "0".
     F <-- A - BAh           // Digit?
     If !Carry Jump To Echo                // Yes, output it.
     A += 06h + Carry        // Add offset for letter.
+
 Echo:
     BIT $DSP                 // DA bit (B7) cleared yet?
     If Negative Jump To Echo                // No, wait for display
