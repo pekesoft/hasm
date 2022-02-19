@@ -1,0 +1,93 @@
+{
+    "Info": {
+        "Name": "",
+        "Inherits": "",
+        "Authors": [""],
+        "Version": "",
+        "License": "",
+        "Website": "",
+        "Source": ["Opcode List", "http://www.6502.org/tutorials/6502opcodes.html"],
+        "Screenshot": ""
+    },
+    "Definitions": [
+        {
+            "Name": "",
+            "Size": 0,
+            "Type": "",
+            "Description": ""
+        }
+    ],
+    "Tables": [
+        {
+            "Name": "opcode",
+            "Size": 8,
+            "TableType": "opcode",
+            "Description": "Opcode structure",
+            "Entries": [
+                {
+                    "Index": [7, 6, 5],
+                    "Name": "a",
+                    "Size": 0,
+                    "Description": "Instruction segment"
+                }, {
+                    "Index": [4, 3, 2],
+                    "Name": "b",
+                    "Size": 0,
+                    "Description": "Addressing segment"
+                }, {
+                    "Index": [1, 0],
+                    "Name": "c",
+                    "Size": 0,
+                    "Description": "Block segment"
+                }
+            ]
+        }, {
+            "Name": "",
+            "Size": 0,
+            "TableType": "",
+            "Description": "",
+            "Entries": [
+                {
+                    "Index": [0],
+                    "Name": "",
+                    "Condition": ["", 0],
+                    "Size": 0,
+                    "Description": "",
+                    "HASM": "",
+                    "Alias": [""],
+                    "Cycles": ["Min", 0,
+                               "Max", 0]
+                }
+            ]
+        }
+    ],
+    "Instructions": [
+        {
+            "Segment": "",
+            "Value": 0,
+            "Bytes": 0,
+            "Cycles": ["Min", 0,
+                       "Max", 0],
+            "Group": "",
+            "Description": "",
+            "ASM": "",
+            "Mnemonic": "",
+            "Destination": [""],
+            "Source": [""],
+            "HASM": "",
+            "Alias": [""],
+            "HDest": [""],
+            "HOpers": "",
+            "HOper1": "",
+            "HSource1": [""],
+            "HOper2": "",
+            "HSource2": [""],
+            "HComplement": "",
+            "Subsegments": [
+                {
+
+                }
+            ]
+        }
+    ]
+}
